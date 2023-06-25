@@ -13,10 +13,16 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-	// const req.body.id;
+	const id = req.params.id;
+	const user = users.find((user) => user.id.toString() === id);
 
-	res.status(200);
-	res.json(users);
+	if (user) {
+		res.status(200);
+		res.json(user);
+	} else {
+		res.status(404);
+		res.json({ message: `User ${id} not found.` });
+	}
 });
 
 module.exports = router;
