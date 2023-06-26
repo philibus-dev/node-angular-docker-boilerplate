@@ -25,4 +25,23 @@ router.get('/:id', (req, res) => {
 	}
 });
 
+router.post('/', (req, res) => {
+	const { id, name, email } = req.body;
+
+	if (!id || !name || !email) {
+		res.status(400);
+		res.json({
+			message: 'request did not contain id, name, or email address.',
+		});
+		return false;
+	}
+
+	const newUser = { id, name, email };
+
+	users.push(newUser);
+
+	res.status(200);
+	res.json({ message: 'New user created.', newUser });
+});
+
 module.exports = router;
