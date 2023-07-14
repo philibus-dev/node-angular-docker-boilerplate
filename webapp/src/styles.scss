@@ -11,3 +11,14 @@ body {
   color: #999;
   padding: 1rem;
 }
+// Example centered container box
+.container {
+  display: block;
+  max-width: 800px;
+  margin: auto;
+  padding: 0.25rem 1.5rem 0.5rem;
+  background-color: #666;
+  border: 1px solid #999;
+  color: #ccc;
+  border-radius: 0.5rem;
+}

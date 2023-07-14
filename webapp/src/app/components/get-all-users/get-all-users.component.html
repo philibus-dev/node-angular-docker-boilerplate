@@ -1,0 +1,9 @@
+<div class="container">
+  <h2>Get All Users</h2>
+  <p>List of all users:</p>
+  <ul>
+    <li *ngFor="let user of users">
+      {{ user.id }} - <strong>{{ user.name }}</strong> - {{ user.email }}
+    </li>
+  </ul>
+</div>
