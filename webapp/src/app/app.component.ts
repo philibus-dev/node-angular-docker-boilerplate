@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, VERSION } from '@angular/core';
+
 import { UsersService } from './services/users.service';
 import { User } from './models/user';
 
@@ -8,6 +9,7 @@ import { User } from './models/user';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  angularVersion = VERSION.full;
   users: User[] = [];
 
   constructor(private usersService: UsersService) {}
