@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 // models
 import { User } from '../models/user';
 
@@ -8,7 +8,7 @@ import { User } from '../models/user';
   providedIn: 'root',
 })
 export class UsersService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAllUsers(): Observable<User[]> {
     return this.http.get<User[]>('/api/users');
@@ -22,8 +22,8 @@ export class UsersService {
   //   return {'id': 3, name: 'Test', email: 'test@example.com'};
   // }
 
-  deleteUser(id: number): Observable<User> {
+  deleteUser(id: number): Observable<User[]> {
     console.log(`Deleting user ${id}`);
-    return this.http.delete<User>('/api/users');
+    return this.http.delete<{ users: User[] }>(`/api/users/${id}`).pipe(map((res) => res.users));;
   }
 }

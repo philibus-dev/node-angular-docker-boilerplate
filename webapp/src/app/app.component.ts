@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
 
   users: User[] = [];
 
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService) { }
 
   ngOnInit(): void {
     this.getAllUsers();
@@ -27,6 +27,8 @@ export class AppComponent implements OnInit {
   }
 
   deleteUser(id: number): void {
-    this.usersService.deleteUser(id).subscribe();
+    this.usersService.deleteUser(id).subscribe((users: User[]) => {
+      this.users = users;
+    });
   }
 }

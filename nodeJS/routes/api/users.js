@@ -49,17 +49,22 @@ router.delete('/:id', (req, res) => {
 	console.log(`users.js: deleting user with id of ${id}`);
 
 	if (id) {
-		const indexOfUser = users.findIndex((obj) => obj.id === id);
+		console.log('users array is', users);
+		// const indexOfUser = users.findIndex((obj) => obj.id === id);
+		const indexOfUser = users.findIndex((user) => user.id.toString() === id);
 
 		if (indexOfUser > -1) {
 			users.splice(indexOfUser, 1);
+			console.log('after delete, users array is', users);
 			res.status(200);
-			res.json({ message: `User ${id} deleted successfully.`, newUser });
+			res.json({ message: `User ${id} deleted successfully.`, users });
 		} else {
+			console.log(`No user index with ID of ${id}.`);
 			res.status(404);
 			res.json({ message: `No user index with ID of ${id}.` });
 		}
 	} else {
+		console.log(`Unable to delete user with ID of ${id}.`);
 		res.status(404);
 		res.json({ message: `Unable to delete user with ID of ${id}.` });
 	}
