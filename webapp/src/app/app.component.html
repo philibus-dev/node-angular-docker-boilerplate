@@ -11,7 +11,7 @@
     <div class="column">{{ user.name }}</div>
     <div class="column shrink tools">
       <button>Edit</button>
-      <button>Delete</button>
+      <button (click)="deleteUser(user.id)">Delete</button>
     </div>
   </div>
   <div class="row">

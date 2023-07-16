@@ -3,7 +3,7 @@ const express = require('express'),
 
 const users = [
 	{ id: 123, name: 'Charles Francis Xavier', email: 'professor.x@example.com' },
-	{ id: 456, name: 'Scott Summers', email: 'cyclops.com' },
+	{ id: 456, name: 'Scott Summers', email: 'cyclops@example.com' },
 	{ id: 789, name: 'Robert Louis Drake', email: 'iceman@example.com' },
 ];
 
@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
 	if (!id || !name || !email) {
 		res.status(400);
 		res.json({
-			message: 'request did not contain id, name, or email address.',
+			message: 'Request did not contain id, name, or email address.',
 		});
 		return false;
 	}
@@ -42,6 +42,27 @@ router.post('/', (req, res) => {
 
 	res.status(200);
 	res.json({ message: 'New user created.', newUser });
+});
+
+router.delete('/:id', (req, res) => {
+	const id = req.params.id;
+	console.log(`users.js: deleting user with id of ${id}`);
+
+	if (id) {
+		const indexOfUser = users.findIndex((obj) => obj.id === id);
+
+		if (indexOfUser > -1) {
+			users.splice(indexOfUser, 1);
+			res.status(200);
+			res.json({ message: `User ${id} deleted successfully.`, newUser });
+		} else {
+			res.status(404);
+			res.json({ message: `No user index with ID of ${id}.` });
+		}
+	} else {
+		res.status(404);
+		res.json({ message: `Unable to delete user with ID of ${id}.` });
+	}
 });
 
 module.exports = router;
