@@ -5,6 +5,9 @@
 
 // Some basic styles you can replace
 
+// Variables
+$border-color: #999;
+
 // I hate bright white backgrounds
 body {
   background-color: #333;
@@ -16,9 +19,44 @@ body {
   display: block;
   max-width: 800px;
   margin: 0 auto 1.5rem;
-  padding: 0.25rem 1.5rem 0.5rem;
   background-color: #666;
-  border: 1px solid #999;
+  border: 1px solid $border-color;
   color: #ccc;
-  border-radius: 0.5rem;
+}
+
+// Basic Flexbox Row-Column Layout
+.row {
+  display: flex;
+  justify-content: space-between;
+
+  // Borders betweem the rows
+  &:not(:last-of-type) {
+    border-bottom: 1px solid $border-color;
+  }
+
+  .column {
+    padding: 1rem;
+    flex: 1;
+    &:not(:last-child) {
+      border-right: 1px solid $border-color;
+    }
+
+    // Columns with specific styles
+    &.shrink {
+      flex-grow: 0;
+      flex-basis: fit-content;
+    }
+    &.tools {
+      background-color: #777;
+
+      // Space out buttons from each other
+      button:not(:last-of-type) {
+        margin-right: 1rem;
+      }
+    }
+    // Add New User column
+    &.add-new {
+      text-align: right;
+    }
+  }
 }

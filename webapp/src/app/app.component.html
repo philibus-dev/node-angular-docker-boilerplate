@@ -5,11 +5,18 @@
 <h2>CRUD Operations</h2>
 
 <div class="container">
-  <h2>Get All Users</h2>
-  <p>List of all users:</p>
-  <ul>
-    <li *ngFor="let user of users">
-      {{ user.id }} - <strong>{{ user.name }}</strong> - {{ user.email }}
-    </li>
-  </ul>
+  <div class="row" *ngFor="let user of users">
+    <div class="column shrink">{{ user.id }}</div>
+    <div class="column shrink">{{ user.email }}</div>
+    <div class="column">{{ user.name }}</div>
+    <div class="column shrink tools">
+      <button>Edit</button>
+      <button>Delete</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="column add-new">
+      <button>Add New User</button>
+    </div>
+  </div>
 </div>
