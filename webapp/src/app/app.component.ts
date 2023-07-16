@@ -1,5 +1,8 @@
 import { Component, OnInit, VERSION } from '@angular/core';
 
+import { User } from './models/user';
+import { UsersService } from './services/users.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,7 +11,14 @@ import { Component, OnInit, VERSION } from '@angular/core';
 export class AppComponent implements OnInit {
   angularVersion = VERSION.full;
 
-  constructor() {}
+  users: User[] = [];
 
-  ngOnInit(): void {}
+  constructor(private usersService: UsersService) {}
+
+  ngOnInit(): void {
+    this.usersService.getAllUsers().subscribe((users: User[]) => {
+      this.users = users;
+      console.log('getAllUsers():', this.users);
+    });
+  }
 }
