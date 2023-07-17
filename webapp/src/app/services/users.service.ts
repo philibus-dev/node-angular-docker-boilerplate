@@ -23,7 +23,6 @@ export class UsersService {
   // }
 
   deleteUser(id: number): Observable<User[]> {
-    console.log(`Deleting user ${id}`);
     return this.http.delete<{ users: User[] }>(`/api/users/${id}`).pipe(map((res) => res.users));;
   }
 }

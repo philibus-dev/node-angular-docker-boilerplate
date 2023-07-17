@@ -2,9 +2,9 @@ const express = require('express'),
 	router = express.Router();
 
 const users = [
-	{ id: 123, name: 'Charles Francis Xavier', email: 'professor.x@example.com' },
-	{ id: 456, name: 'Scott Summers', email: 'cyclops@example.com' },
-	{ id: 789, name: 'Robert Louis Drake', email: 'iceman@example.com' },
+	{ id: 1, name: 'Charles Francis Xavier', email: 'professor.x@example.com' },
+	{ id: 2, name: 'Scott Summers', email: 'cyclops@example.com' },
+	{ id: 3, name: 'Robert Louis Drake', email: 'iceman@example.com' },
 ];
 
 router.get('/', (req, res) => {
@@ -46,25 +46,19 @@ router.post('/', (req, res) => {
 
 router.delete('/:id', (req, res) => {
 	const id = req.params.id;
-	console.log(`users.js: deleting user with id of ${id}`);
 
 	if (id) {
-		console.log('users array is', users);
-		// const indexOfUser = users.findIndex((obj) => obj.id === id);
 		const indexOfUser = users.findIndex((user) => user.id.toString() === id);
 
 		if (indexOfUser > -1) {
 			users.splice(indexOfUser, 1);
-			console.log('after delete, users array is', users);
 			res.status(200);
 			res.json({ message: `User ${id} deleted successfully.`, users });
 		} else {
-			console.log(`No user index with ID of ${id}.`);
 			res.status(404);
 			res.json({ message: `No user index with ID of ${id}.` });
 		}
 	} else {
-		console.log(`Unable to delete user with ID of ${id}.`);
 		res.status(404);
 		res.json({ message: `Unable to delete user with ID of ${id}.` });
 	}
