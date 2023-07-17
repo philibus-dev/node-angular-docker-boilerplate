@@ -6,7 +6,7 @@
 
 <!-- All Users -->
 <div class="container">
-  <div class="row" *ngFor="let user of users">
+  <div class="row" *ngFor="let user of users" [@fadeInOutAnimation]>
     <div class="column shrink">{{ user.id }}</div>
     <div class="column shrink">{{ user.email }}</div>
     <div class="column">{{ user.name }}</div>
@@ -16,19 +16,20 @@
     </div>
   </div>
 
-  <div class="row backgound-darker" *ngIf="!newUserFormOpen">
-    <div class="column add-new">
-      <button type="button" (click)="openNewUserForm()">Add New User</button>
+  <div class="row backgound-darker" *ngIf="newUserFormOpen" [@fadeInOutAnimation]>
+    <div class="column shrink">{{ getNextId() }}</div>
+    <div class="column">Column</div>
+    <div class="column">Column</div>
+    <div class="column shrink tools">
+      <button type="button" (click)="closeNewUserForm()">Save</button>
     </div>
   </div>
 </div>
 
-<!-- New User Form -->
-<div class="row backgound-darker" [@openClose]="newUserFormOpen ? 'open' : 'closed'">
-  <div class="column shrink">{{ getNextId() }}</div>
-  <div class="column">Column</div>
-  <div class="column">Column</div>
-  <div class="column shrink tools">
-    <button type="button" (click)="closeNewUserForm()">Save</button>
+<div class="row no-background" *ngIf="!newUserFormOpen">
+  <div class="column add-new">
+    <button type="button" (click)="openNewUserForm()">Add New User</button>
   </div>
 </div>
+
+<!-- New User Form -->

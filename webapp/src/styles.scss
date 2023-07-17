@@ -31,10 +31,14 @@ body {
   display: flex;
   justify-content: space-between;
 
-  // Rows that are slightly darker
+  // Different backgrounds for rows
   &.backgound-darker {
     background-color: $background-color-darker;
   }
+  &.no-backgound {
+    background: none;
+  }
+
 
   // Borders betweem the rows
   &:not(:last-of-type) {

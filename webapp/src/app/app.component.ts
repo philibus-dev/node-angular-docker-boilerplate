@@ -9,22 +9,10 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [
-    trigger('openClose', [
-      state('open', style({
-        height: '100%',
-        opacity: 1,
-      })),
-      state('closed', style({
-        height: '0',
-        opacity: 0,
-      })),
-      transition('open => closed', [
-        animate('0.5s')
-      ]),
-      transition('closed => open', [
-        animate('0.5s')
-      ]),
-    ]),
+    trigger('fadeInOutAnimation', [
+      state('void', style({ opacity: 0 })),
+      transition(':enter', [animate(500)])
+    ])
   ],
 })
 export class AppComponent implements OnInit {
