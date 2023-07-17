@@ -14,6 +14,10 @@ export class UsersService {
     return this.http.get<User[]>('/api/users');
   }
 
+  postNewUser(user: User): Observable<User[]> {
+    return this.http.post<{ users: User[] }>('/api/users', user).pipe(map((res) => res.users));;
+  }
+
   // getUser(userId: number): void {
   //   console.log(`get user ${userId}`);
   // }
@@ -23,6 +27,6 @@ export class UsersService {
   // }
 
   deleteUser(id: number): Observable<User[]> {
-    return this.http.delete<{ users: User[] }>(`/api/users/${id}`).pipe(map((res) => res.users));;
+    return this.http.delete<{ users: User[] }>(`/api/users/${id}`).pipe(map((res) => res.users));
   }
 }

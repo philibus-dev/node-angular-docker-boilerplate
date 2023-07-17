@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
 	users.push(newUser);
 
 	res.status(200);
-	res.json({ message: 'New user created.', newUser });
+	res.json({ message: 'New user created.', users });
 });
 
 router.delete('/:id', (req, res) => {

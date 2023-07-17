@@ -24,6 +24,13 @@ body {
   background-color: $background-color;
   border: 1px solid $border-color;
   color: #ccc;
+
+  &.no-border {
+    border: none;
+  }
+  &.no-background {
+    background: none;
+  }
 }
 
 // Basic Flexbox Row-Column Layout
@@ -52,6 +59,12 @@ body {
       border-right: 1px solid $border-color;
     }
 
+    .error {
+      margin-top: 0.5rem;
+      font-size: 14px;
+      color: orange;
+    }
+
     // Columns with specific styles
     &.shrink {
       flex-grow: 0;
@@ -68,6 +81,12 @@ body {
     // Add New User column
     &.add-new {
       text-align: right;
+    }
+
+    // Form inputs
+    input {
+      width: 100%;
+      padding: 2px 5px 4px;
     }
   }
 }

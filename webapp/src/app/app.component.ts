@@ -3,6 +3,7 @@ import { Component, OnInit, VERSION } from '@angular/core';
 import { User } from './models/user';
 import { UsersService } from './services/users.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -19,12 +20,45 @@ export class AppComponent implements OnInit {
   angularVersion = VERSION.full;
   newUserFormOpen = false;
   users: User[] = [];
+  userForm!: FormGroup;
 
-  constructor(private usersService: UsersService) { }
+  constructor(private usersService: UsersService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.getAllUsers();
+
+    // Initialize the form with the necessary fields and validators
+    this.userForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]]
+    });
   }
+
+  // Convenience getter for easy access to form controls in the HTML template
+  get formControls() {
+    return this.userForm.controls;
+  }
+
+  onSubmit() {
+    if (this.userForm.valid) {
+      // Submit the form data here (e.g., send it to the server)
+      const { name, email } = this.userForm.value;
+      const newUser = { id: this.getNextId(), name, email };
+      this.usersService.postNewUser(newUser).subscribe((users: User[]) => {
+        this.users = users;
+      });
+      this.newUserFormOpen = false;
+      this.userForm.reset();
+    } else {
+      // Mark all form fields as touched to trigger validation messages
+      this.userForm.markAllAsTouched();
+    }
+  }
+  onCancel() {
+    this.userForm.reset();
+    this.newUserFormOpen = false;
+  }
+
 
   // New user methods
   getNextId() {
