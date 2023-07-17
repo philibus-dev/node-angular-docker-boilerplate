@@ -7,6 +7,8 @@
 
 // Variables
 $border-color: #999;
+$background-color: #666;
+$background-color-darker: #555;
 
 // I hate bright white backgrounds
 body {
@@ -19,7 +21,7 @@ body {
   display: block;
   max-width: 800px;
   margin: 0 auto 1.5rem;
-  background-color: #666;
+  background-color: $background-color;
   border: 1px solid $border-color;
   color: #ccc;
 }
@@ -28,6 +30,11 @@ body {
 .row {
   display: flex;
   justify-content: space-between;
+
+  // Rows that are slightly darker
+  &.backgound-darker {
+    background-color: $background-color-darker;
+  }
 
   // Borders betweem the rows
   &:not(:last-of-type) {
