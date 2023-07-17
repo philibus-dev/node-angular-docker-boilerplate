@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
       this.usersService.postNewUser(newUser).subscribe((users: User[]) => {
         this.users = users;
       });
-      this.newUserFormOpen = false;
+      this.closeNewUserForm();
       this.userForm.reset();
     } else {
       // Mark all form fields as touched to trigger validation messages
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
   }
   onCancel() {
     this.userForm.reset();
-    this.newUserFormOpen = false;
+    this.closeNewUserForm();
   }
 
 
@@ -66,7 +66,6 @@ export class AppComponent implements OnInit {
   }
   openNewUserForm() {
     this.newUserFormOpen = true;
-    console.log(`Next ID is ${this.getNextId()}`);
   }
   closeNewUserForm() {
     this.newUserFormOpen = false;
