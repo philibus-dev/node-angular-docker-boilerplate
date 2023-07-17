@@ -26,18 +26,19 @@ export class AppComponent implements OnInit {
     this.getAllUsers();
   }
 
+  // New user methods
+  getNextId() {
+    return this.users.length + 1;  // Never do this in production ;)
+  }
   openNewUserForm() {
     this.newUserFormOpen = true;
     console.log(`Next ID is ${this.getNextId()}`);
-  }
-  getNextId() {
-    // Never do this in production ;)
-    return this.users.length + 1;
   }
   closeNewUserForm() {
     this.newUserFormOpen = false;
   }
 
+  // Get all users
   getAllUsers(): void {
     this.usersService.getAllUsers().subscribe((users: User[]) => {
       this.users = users;
@@ -45,6 +46,7 @@ export class AppComponent implements OnInit {
     });
   }
 
+  // Delete user
   deleteUser(id: number): void {
     this.usersService.deleteUser(id).subscribe((users: User[]) => {
       this.users = users;
