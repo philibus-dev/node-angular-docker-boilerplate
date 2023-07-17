@@ -9,6 +9,7 @@
 $border-color: #999;
 $background-color: #666;
 $background-color-darker: #555;
+$text-light: #eee;
 
 // I hate bright white backgrounds
 body {
@@ -30,6 +31,10 @@ body {
   }
   &.no-background {
     background: none;
+  }
+
+  .text-light {
+    color: $text-light;
   }
 }
 

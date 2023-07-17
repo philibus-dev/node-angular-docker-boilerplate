@@ -19,6 +19,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class AppComponent implements OnInit {
   angularVersion = VERSION.full;
   newUserFormOpen = false;
+  updateUserFormOpen = false;
   users: User[] = [];
   userForm!: FormGroup;
 
@@ -47,7 +48,7 @@ export class AppComponent implements OnInit {
       this.usersService.postNewUser(newUser).subscribe((users: User[]) => {
         this.users = users;
       });
-      this.closeNewUserForm();
+      this.popForm('newUser', 'close');
       this.userForm.reset();
     } else {
       // Mark all form fields as touched to trigger validation messages
@@ -56,19 +57,23 @@ export class AppComponent implements OnInit {
   }
   onCancel() {
     this.userForm.reset();
-    this.closeNewUserForm();
+    this.popForm('newUser', 'close');
   }
 
+  // Open/Close forms
+  popForm(form: string, state: string) {
+    if (form === 'newUser') {
+      this.newUserFormOpen = state === 'open' ? true : false;
+    } else if (form === 'updateUser') {
+      this.updateUserFormOpen = state === 'open' ? true : false;
+    } else {
+      console.error(`No such form - ${form}.`);
+    }
+  }
 
   // New user methods
   getNextId() {
     return this.users.length + 1;  // Never do this in production ;)
-  }
-  openNewUserForm() {
-    this.newUserFormOpen = true;
-  }
-  closeNewUserForm() {
-    this.newUserFormOpen = false;
   }
 
   // Get all users
