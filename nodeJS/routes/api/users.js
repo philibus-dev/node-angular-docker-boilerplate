@@ -1,20 +1,17 @@
 const express = require('express'),
-	router = express.Router();
+	router = express.Router(),
+	UserRepo = require('../../classes/userRepo');
 
-const users = [
-	{ id: 1, name: 'Charles Francis Xavier', email: 'professor.x@example.com' },
-	{ id: 2, name: 'Scott Summers', email: 'cyclops@example.com' },
-	{ id: 3, name: 'Robert Louis Drake', email: 'iceman@example.com' },
-];
+const userRepo = new UserRepo();
 
 router.get('/', (req, res) => {
 	res.status(200);
-	res.json(users);
+	res.json(userRepo.getAllUsers());
 });
 
 router.get('/:id', (req, res) => {
 	const id = req.params.id;
-	const user = users.find((user) => user.id.toString() === id);
+	const user = userRepo.getUser(id);
 
 	if (user) {
 		res.status(200);
@@ -26,9 +23,9 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-	const { id, name, email } = req.body;
+	const { name, email } = req.body;
 
-	if (!id || !name || !email) {
+	if (!name || !email) {
 		res.status(400);
 		res.json({
 			message: 'Request did not contain id, name, or email address.',
@@ -36,31 +33,28 @@ router.post('/', (req, res) => {
 		return false;
 	}
 
-	const newUser = { id, name, email };
-
-	users.push(newUser);
+	userRepo.addUser(name, email);
 
 	res.status(200);
-	res.json({ message: 'New user created.', users });
+	res.json({ message: 'New user created.', users: userRepo.getAllUsers() });
 });
 
 router.delete('/:id', (req, res) => {
 	const id = req.params.id;
 
 	if (id) {
-		const indexOfUser = users.findIndex((user) => user.id.toString() === id);
+		const deleteUser = userRepo.deleteUser(id);
 
-		if (indexOfUser > -1) {
-			users.splice(indexOfUser, 1);
+		if (deleteUser) {
 			res.status(200);
-			res.json({ message: `User ${id} deleted successfully.`, users });
+			res.json({ message: `User ${id} deleted successfully.`, users: userRepo.getAllUsers() });
 		} else {
 			res.status(404);
 			res.json({ message: `No user index with ID of ${id}.` });
 		}
 	} else {
 		res.status(404);
-		res.json({ message: `Unable to delete user with ID of ${id}.` });
+		res.json({ message: `You must specify an id for deletion` });
 	}
 });
 
