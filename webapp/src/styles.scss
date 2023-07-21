@@ -1,3 +1,5 @@
+@import "style-includes/variables";
+
 * {
   font-family: Lato;
   box-sizing: border-box;
@@ -5,11 +7,6 @@
 
 // Some basic styles you can replace
 
-// Variables
-$border-color: #999;
-$background-color: #666;
-$background-color-darker: #555;
-$text-light: #eee;
 
 // I hate bright white backgrounds
 body {

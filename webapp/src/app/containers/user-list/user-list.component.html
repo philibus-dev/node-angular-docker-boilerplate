@@ -1,0 +1,62 @@
+<div class="user-list-container">
+
+  <h2>Users List</h2>
+
+  <!-- All Users -->
+  <div class="container" *ngIf="users.length > 0">
+    <div class="row" *ngFor="let user of users" [@fadeInOutAnimation]>
+      <div class="column shrink">{{ user.id }}</div>
+      <div class="column text-light">{{ user.name }}</div>
+      <div class="column shrink">{{ user.email }}</div>
+      <div class="column shrink tools">
+        <button type="button">Edit</button>
+        <button type="button" (click)="deleteUser(user.id)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container no-border">
+    <!-- New User Form -->
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="row backgound-darker" *ngIf="newUserFormOpen" [@fadeInOutAnimation]>
+        <div class="column shrink">{{ getNextId() }}</div>
+        <div class="column">
+          <input type="text" formControlName="name" placeholder="Enter a name" />
+          <div class="error" *ngIf="formControls['name'].touched && formControls['name'].errors?.['required']"
+               [@fadeInOutAnimation]>
+            A name is required.
+          </div>
+        </div>
+        <div class="column">
+
+          <input type="email" formControlName="email" placeholder="Enter an email address" />
+          <div *ngIf="formControls['email'].touched && formControls['email'].errors?.['required']" class="error">
+            Email is required.
+          </div>
+          <div *ngIf="formControls['email'].touched && formControls['email'].errors?.['email']" class="error">
+            Please enter a valid email address.
+          </div>
+
+        </div>
+        <div class="column shrink tools">
+          <button type="submit" [disabled]="userForm.invalid">Save</button>
+          <button type="button" (click)="onCancel()">Cancel</button>
+        </div>
+      </div>
+      <!-- Show form values as you type them -->
+      <!--
+        <p>userForm.value: {{ userForm.value | json }}</p>
+        <p>userForm.status: {{ userForm.status }}</p>
+      -->
+    </form>
+  </div>
+
+  <div class="container no-border no-background" [@fadeInOutAnimation]>
+    <div class="row no-background" *ngIf="!newUserFormOpen">
+      <div class="column add-new">
+        <button type="button" (click)="popForm('newUser','open')">Add New User</button>
+      </div>
+    </div>
+  </div>
+
+</div>
