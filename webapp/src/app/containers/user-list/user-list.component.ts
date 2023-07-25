@@ -20,14 +20,21 @@ export class UserListComponent implements OnInit {
   updateUserFormOpen = false;
   users: User[] = [];
   userForm!: FormGroup;
+  updateForm!: FormGroup;
 
   constructor(private usersService: UsersService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.getAllUsers();
 
-    // Initialize the form with the necessary fields and validators
+    // Add user form
     this.userForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]]
+    });
+
+    // Update user form
+    this.updateForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]]
     });
@@ -38,7 +45,7 @@ export class UserListComponent implements OnInit {
     return this.userForm.controls;
   }
 
-  onSubmit() {
+  onSubmitNewUser() {
     if (this.userForm.valid) {
       // Submit the form data here (e.g., send it to the server)
       const { name, email } = this.userForm.value;
@@ -53,9 +60,32 @@ export class UserListComponent implements OnInit {
       this.userForm.markAllAsTouched();
     }
   }
-  onCancel() {
+
+  onSubmitUpdateUser() {
+    if (this.updateForm.valid) {
+      console.log('this.updateForm.value is ', this.updateForm.value);
+      // Submit the form data here (e.g., send it to the server)
+      const { id, name, email } = this.updateForm.value;
+      const updatedUser = { id, name, email };
+      this.usersService.putUpdatedUser(updatedUser).subscribe((users: User[]) => {
+        this.users = users;
+      });
+      this.popForm('updatedUser', 'close');
+      this.updateForm.reset();
+    } else {
+      // Mark all form fields as touched to trigger validation messages
+      this.updateForm.markAllAsTouched();
+    }
+  }
+
+  onCancelNewUser() {
     this.userForm.reset();
     this.popForm('newUser', 'close');
+  }
+
+  onCancelUpdateUser() {
+    this.userForm.reset();
+    this.popForm('updateUser', 'close');
   }
 
   // Open/Close forms
@@ -80,6 +110,10 @@ export class UserListComponent implements OnInit {
       this.users = users;
       console.log('getAllUsers():', this.users);
     });
+  }
+
+  updateUser(user: User): void {
+    // this.usersService.
   }
 
   // Delete user

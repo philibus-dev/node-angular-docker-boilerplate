@@ -15,7 +15,7 @@ export class UsersService {
   }
 
   postNewUser(user: User): Observable<User[]> {
-    return this.http.post<{ users: User[] }>('/api/users', user).pipe(map((res) => res.users));;
+    return this.http.post<{ users: User[] }>('/api/users', user).pipe(map((res) => res.users));
   }
 
   // getUser(userId: number): void {
@@ -25,6 +25,12 @@ export class UsersService {
   // editUser(updatedUser: User): User {
   //   return {'id': 3, name: 'Test', email: 'test@example.com'};
   // }
+
+  putUpdatedUser(updatedUser: User): Observable<User[]> {
+    const userId: number = updatedUser.id;
+    console.log('putUpdatedUser() userId');
+    return this.http.put<{ users: User[] }>(`/api/users/${userId}`, updatedUser).pipe(map((res) => res.users));
+  }
 
   deleteUser(id: number): Observable<User[]> {
     return this.http.delete<{ users: User[] }>(`/api/users/${id}`).pipe(map((res) => res.users));
