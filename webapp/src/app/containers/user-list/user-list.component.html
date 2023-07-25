@@ -24,7 +24,7 @@
         </div>
         <div class="column shrink tools">
           <button type="button" (click)="onSubmitUpdateUser()" [disabled]="userForm.invalid">Save</button>
-          <button type="button" (click)="onCancelUpdateUser()">Cancel</button>
+          <button type="button" (click)="onCancelEditNewUser('updateUser')">Cancel</button>
         </div>
       </div>
     </form>
@@ -68,7 +68,7 @@
         </div>
         <div class="column shrink tools">
           <button type="submit" [disabled]="userForm.invalid">Save</button>
-          <button type="button" (click)="onCancelNewUser()">Cancel</button>
+          <button type="button" (click)="onCancelEditNewUser('newUser')">Cancel</button>
         </div>
       </div>
       <!-- Show form values as you type them -->

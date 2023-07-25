@@ -13,7 +13,7 @@ module.exports = class UserRepo {
     constructor() {
         users.forEach((user) => {
             this.addUser(user.name, user.email);
-        })
+        });
     }
 
     getAllUsers() {
