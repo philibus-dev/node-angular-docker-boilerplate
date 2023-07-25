@@ -22,9 +22,11 @@ export class UsersService {
   //   console.log(`get user ${userId}`);
   // }
 
-  // editUser(updatedUser: User): User {
-  //   return {'id': 3, name: 'Test', email: 'test@example.com'};
-  // }
+  putUpdatedUser(updatedUser: User): Observable<User[]> {
+    const userId: number = updatedUser.id;
+    console.log('putUpdatedUser() userId');
+    return this.http.put<{ users: User[] }>(`/api/users/${userId}`, updatedUser).pipe(map((res) => res.users));
+  }
 
   putUpdatedUser(updatedUser: User): Observable<User[]> {
     const userId: number = updatedUser.id;
