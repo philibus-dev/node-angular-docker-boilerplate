@@ -48,58 +48,58 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  onSubmitNewUser() {
-    if (this.userForm.valid) {
+  onSubmitUser(type: string): boolean | void {
 
-      // Submit the form data here (e.g., send it to the server)
-      const { name, email } = this.userForm.value;
+    let formSubmitted = undefined;
 
-      const newUser: User = { name, email };
+    switch(type) {
+      case 'newUser' :
+        formSubmitted = this.userForm;
+        break;
+      case 'updatedUser' :
+        formSubmitted = this.updateForm;
+        break;
+    }
 
-      this.usersService.postNewUser(newUser).subscribe({
-        next: (users: User[]) => {
-          this.users = users;
-        },
-        error: (err) => {
-          console.error(err);
-        }
-      });
+    if (!formSubmitted) {return false;}
 
-      this.popForm('newUser', 'close');
+    if (formSubmitted.valid) {
+      const currUser: User = formSubmitted.value;
 
-      this.userForm.reset();
+      if (type === 'newUser') {
+
+        this.usersService.postNewUser(currUser).subscribe({
+          next: (users: User[]) => {
+            this.users = users;
+          },
+          error: (err) => {
+            console.error(err);
+          }
+        });
+
+      } else {
+
+        this.usersService.putUpdatedUser(currUser).subscribe({
+          next: (users: User[]) => {
+            this.users = users;
+          },
+          error: (err) => {
+            console.error(err);
+          }
+        });
+
+      }
+
+      this.popForm(type, 'close');
+
+      formSubmitted.reset();
+
+
     } else {
       // Mark all form fields as touched to trigger validation messages
-      this.userForm.markAllAsTouched();
+      formSubmitted.markAllAsTouched();
     }
-  }
 
-  onSubmitUpdateUser() {
-    if (this.updateForm.valid) {
-
-      console.log('this.updateForm.value is ', this.updateForm.value);
-
-      // Submit the form data here (e.g., send it to the server)
-      const { id, name, email } = this.updateForm.value;
-
-      const updatedUser = { id, name, email };
-
-      this.usersService.putUpdatedUser(updatedUser).subscribe({
-        next: (users: User[]) => {
-          this.users = users;
-        },
-        error: (err) => {
-          console.error(err);
-        }
-      });
-
-      this.popForm('updatedUser', 'close');
-
-      this.updateForm.reset();
-    } else {
-      // Mark all form fields as touched to trigger validation messages
-      this.updateForm.markAllAsTouched();
-    }
   }
 
   onCancelEditNewUser(type: string) {
@@ -138,7 +138,7 @@ export class UserListComponent implements OnInit {
   }
 
   // Delete user
-  deleteUser(id: number): void {
+  deleteUser(id: string): void {
 
     this.usersService.deleteUser(id).subscribe({
       next: (users: User[]) => {

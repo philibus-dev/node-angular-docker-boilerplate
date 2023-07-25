@@ -3,9 +3,9 @@
   <h2>Users List</h2>
 
   <div class="container no-border">
-    <form [formGroup]="updateForm" (ngSubmit)="onSubmitUpdateUser()">
+    <form [formGroup]="updateForm" (ngSubmit)="onSubmitUser('updatedUser')">
       <div class="row background-darker" *ngIf="updateUserFormOpen" [@fadeInOutAnimation]>
-        <div class="column shrink">user Id here</div>
+        <div class="column shrink">&nbsp;</div>
         <div class="column">
           <input type="text" name="name" placeholder="Enter updated name" />
           <div class="error" *ngIf="formControls['name'].touched && formControls['name'].errors?.['required']"
@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="column shrink tools">
-          <button type="button" (click)="onSubmitUpdateUser()" [disabled]="userForm.invalid">Save</button>
+          <button type="button" (click)="onSubmitUser('updatedUser')" [disabled]="userForm.invalid">Save</button>
           <button type="button" (click)="onCancelEditNewUser('updateUser')">Cancel</button>
         </div>
       </div>
@@ -38,16 +38,16 @@
       <div class="column shrink">{{ user.email }}</div>
       <div class="column shrink tools">
         <button type="button" (click)="popForm('updateUser', 'open')">Edit</button>
-        <button type="button" (click)="deleteUser(user.id)">Delete</button>
+        <button type="button" (click)="deleteUser(user.id!)">Delete</button>
       </div>
     </div>
   </div>
 
   <div class="container no-border">
     <!-- New user form -->
-    <form [formGroup]="userForm" (ngSubmit)="onSubmitNewUser()">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmitUser('newUser')">
       <div class="row backgound-darker" *ngIf="newUserFormOpen" [@fadeInOutAnimation]>
-        <div class="column shrink">{{ getNextId() }}</div>
+        <div class="column shrink">&nbsp;</div>
         <div class="column">
           <input type="text" formControlName="name" placeholder="Enter a name" />
           <div class="error" *ngIf="formControls['name'].touched && formControls['name'].errors?.['required']"
