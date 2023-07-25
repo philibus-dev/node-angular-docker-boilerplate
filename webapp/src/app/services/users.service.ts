@@ -28,12 +28,6 @@ export class UsersService {
     return this.http.put<{ users: User[] }>(`/api/users/${userId}`, updatedUser).pipe(map((res) => res.users));
   }
 
-  putUpdatedUser(updatedUser: User): Observable<User[]> {
-    const userId: number = updatedUser.id;
-    console.log('putUpdatedUser() userId');
-    return this.http.put<{ users: User[] }>(`/api/users/${userId}`, updatedUser).pipe(map((res) => res.users));
-  }
-
   deleteUser(id: number): Observable<User[]> {
     return this.http.delete<{ users: User[] }>(`/api/users/${id}`).pipe(map((res) => res.users));
   }
