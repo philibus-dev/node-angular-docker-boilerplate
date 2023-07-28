@@ -1,0 +1,6 @@
+<div>This user is: {{ user?.name }}</div>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+    <input type="text" style="width: 200px; margin-right: 1rem;" formControlName="formData" />
+    <button type="submit">Submit</button>
+</form>

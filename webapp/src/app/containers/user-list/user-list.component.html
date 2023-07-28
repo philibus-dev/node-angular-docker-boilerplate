@@ -2,10 +2,23 @@
 
   <h2>Users List</h2>
 
+  <p>Under develoment: moving these user forms into their own component.</p>
+
+  <div class="container">
+    <div class="row" *ngFor="let user of users" [@fadeInOutAnimation]>
+      <div class="column">
+        <app-user [user]="user" (formSubmitted)="onFormSubmitted($event)"></app-user>
+      </div>
+    </div>
+    <p>Form contents:</p>
+    <pre>{{ parentForm.value| json }}</pre>
+  </div>
+
+  <hr />
+
   <div class="container no-border">
     <form [formGroup]="updateForm" (ngSubmit)="onSubmitUser('updatedUser')">
       <div class="row background-darker" *ngIf="updateUserFormOpen" [@fadeInOutAnimation]>
-        <div class="column shrink">&nbsp;</div>
         <div class="column">
           <input type="text" name="name" placeholder="Enter updated name" />
           <div class="error" *ngIf="formControls['name'].touched && formControls['name'].errors?.['required']"
@@ -33,8 +46,10 @@
   <!-- All Users -->
   <div class="container" *ngIf="users.length > 0">
     <div class="row" *ngFor="let user of users" [@fadeInOutAnimation]>
-      <div class="column shrink">{{ user.id }}</div>
-      <div class="column text-light">{{ user.name }}</div>
+      <div class="column">
+        <span class="text-light">{{ user.name }}</span> &nbsp;
+        <small>{{ user.id }}</small>
+      </div>
       <div class="column shrink">{{ user.email }}</div>
       <div class="column shrink tools">
         <button type="button" (click)="popForm('updateUser', 'open')">Edit</button>
@@ -47,7 +62,6 @@
     <!-- New user form -->
     <form [formGroup]="userForm" (ngSubmit)="onSubmitUser('newUser')">
       <div class="row backgound-darker" *ngIf="newUserFormOpen" [@fadeInOutAnimation]>
-        <div class="column shrink">&nbsp;</div>
         <div class="column">
           <input type="text" formControlName="name" placeholder="Enter a name" />
           <div class="error" *ngIf="formControls['name'].touched && formControls['name'].errors?.['required']"

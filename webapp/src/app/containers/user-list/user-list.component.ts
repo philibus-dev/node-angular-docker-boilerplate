@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {animate, state, style, transition, trigger} from "@angular/animations";
-import {User} from "../../models/user";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {UsersService} from "../../services/users.service";
+import { Component, OnInit } from '@angular/core';
+import { animate, state, style, transition, trigger } from "@angular/animations";
+import { User } from "../../models/user";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UsersService } from "../../services/users.service";
 
 @Component({
   selector: 'app-user-list',
@@ -22,16 +22,29 @@ export class UserListComponent implements OnInit {
   userForm!: FormGroup;
   updateForm!: FormGroup;
 
+  receivedData: string = '';
+  parentForm: FormGroup;
+
   // Convenience getter for easy access to form controls in the HTML template
   get formControls() {
     return this.userForm.controls;
   }
 
-  constructor(private usersService: UsersService, private fb: FormBuilder) { }
+  constructor(private usersService: UsersService, private fb: FormBuilder) {
+    this.parentForm = this.fb.group({
+      receivedData: [''], // Define the form control for received data (optional)
+    });
+  }
 
   ngOnInit(): void {
     this.getAllUsers();
     this.setupForm();
+  }
+
+  onFormSubmitted(data: string) {
+    console.log('onFormSubitted() in parent:', data);
+    this.receivedData = data;
+    this.parentForm.patchValue({ receivedData: data }); // Update form control (optional)
   }
 
   setupForm() {
@@ -52,16 +65,16 @@ export class UserListComponent implements OnInit {
 
     let formSubmitted = undefined;
 
-    switch(type) {
-      case 'newUser' :
+    switch (type) {
+      case 'newUser':
         formSubmitted = this.userForm;
         break;
-      case 'updatedUser' :
+      case 'updatedUser':
         formSubmitted = this.updateForm;
         break;
     }
 
-    if (!formSubmitted) {return false;}
+    if (!formSubmitted) { return false; }
 
     if (formSubmitted.valid) {
       const currUser: User = formSubmitted.value;
