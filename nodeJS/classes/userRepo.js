@@ -46,7 +46,7 @@ module.exports = class UserRepo {
 
     editUser(userIdx, userObj) {
         this.users[userIdx] = {
-            ...this.users[userIdx].toJSON(),
+            id: this.users[userIdx].id,
             name: userObj.name,
             email: userObj.email
         }
