@@ -39,6 +39,30 @@ router.post('/', (req, res) => {
 	res.json({ message: 'New user created.', users: userRepo.getAllUsers() });
 });
 
+router.put('/:id', (req, res) => {
+	const id = req.params.id;
+
+	if (id) {
+		const editUserIdx = userRepo.getUserIndex(id);
+
+		if (editUserIdx === -1) {
+			res.status(404);
+			res.json({ message: `No user index with ID of ${id}.` });
+			return;
+		}
+
+		userRepo.editUser(editUserIdx, req.body);
+
+		res.status(200);
+		res.json(userRepo.getAllUsers());
+
+	} else {
+		res.status(400);
+		res.json({ message: `No id was passed` });
+	}
+
+})
+
 router.delete('/:id', (req, res) => {
 	const id = req.params.id;
 

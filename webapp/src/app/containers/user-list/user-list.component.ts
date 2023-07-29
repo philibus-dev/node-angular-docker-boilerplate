@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { animate, state, style, transition, trigger } from "@angular/animations";
 import { User } from "../../models/user";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { UsersService } from "../../services/users.service";
+import {animate, state, style, transition, trigger} from "@angular/animations";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-user-list',
@@ -17,118 +17,51 @@ import { UsersService } from "../../services/users.service";
 })
 export class UserListComponent implements OnInit {
   newUserFormOpen = false;
-  updateUserFormOpen = false;
   users: User[] = [];
-  userForm!: FormGroup;
-  updateForm!: FormGroup;
+  selEditUser: User | undefined;
 
-  receivedData: string = '';
-  parentForm: FormGroup;
-
-  // Convenience getter for easy access to form controls in the HTML template
-  get formControls() {
-    return this.userForm.controls;
-  }
-
-  constructor(private usersService: UsersService, private fb: FormBuilder) {
-    this.parentForm = this.fb.group({
-      receivedData: [''], // Define the form control for received data (optional)
-    });
-  }
+  constructor(private usersService: UsersService) {}
 
   ngOnInit(): void {
     this.getAllUsers();
-    this.setupForm();
   }
 
-  onFormSubmitted(data: string) {
-    console.log('onFormSubitted() in parent:', data);
-    this.receivedData = data;
-    this.parentForm.patchValue({ receivedData: data }); // Update form control (optional)
-  }
+  onFormSubmitted(data: User) {
 
-  setupForm() {
-    // Add user form
-    this.userForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
-    });
-
-    // Update user form
-    this.updateForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
-    });
-  }
-
-  onSubmitUser(type: string): boolean | void {
-
-    let formSubmitted = undefined;
-
-    switch (type) {
-      case 'newUser':
-        formSubmitted = this.userForm;
-        break;
-      case 'updatedUser':
-        formSubmitted = this.updateForm;
-        break;
-    }
-
-    if (!formSubmitted) { return false; }
-
-    if (formSubmitted.valid) {
-      const currUser: User = formSubmitted.value;
-
-      if (type === 'newUser') {
-
-        this.usersService.postNewUser(currUser).subscribe({
-          next: (users: User[]) => {
-            this.users = users;
-          },
-          error: (err) => {
-            console.error(err);
-          }
-        });
-
-      } else {
-
-        this.usersService.putUpdatedUser(currUser).subscribe({
-          next: (users: User[]) => {
-            this.users = users;
-          },
-          error: (err) => {
-            console.error(err);
-          }
-        });
-
-      }
-
-      this.popForm(type, 'close');
-
-      formSubmitted.reset();
-
-
+    if (!data.id) {
+      this.usersService.postNewUser(data).subscribe({
+        next: (users: User[]) => {
+          this.users = users;
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });
     } else {
-      // Mark all form fields as touched to trigger validation messages
-      formSubmitted.markAllAsTouched();
+      this.usersService.putUpdatedUser(data).subscribe({
+        next: (users: User[]) => {
+          this.users = users;
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });
     }
 
   }
 
-  onCancelEditNewUser(type: string) {
-    this.userForm.reset();
-    this.popForm(type, 'close');
-  }
 
-  // Open/Close forms
-  popForm(form: string, state: string) {
-    if (form === 'newUser') {
-      this.newUserFormOpen = state === 'open';
-    } else if (form === 'updateUser') {
-      this.updateUserFormOpen = state === 'open';
-    } else {
-      console.error(`No such form - ${form}.`);
+  formCancel(type: string) {
+
+    switch(type) {
+      case 'new' :
+        this.newUserFormOpen = false;
+        break;
+      case 'edit' :
+        this.selEditUser = undefined;
+        break;
     }
+
   }
 
   // Get all users
@@ -144,10 +77,6 @@ export class UserListComponent implements OnInit {
       }
     });
 
-  }
-
-  updateUser(user: User): void {
-    // this.usersService.
   }
 
   // Delete user

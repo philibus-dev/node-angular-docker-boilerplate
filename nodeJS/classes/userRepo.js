@@ -34,8 +34,22 @@ module.exports = class UserRepo {
         return false;
     }
 
+    getUserIndex(userId) {
+        return this.users.findIndex((user) => {
+            return user.id === userId;
+        });
+    }
+
     addUser(name, email) {
         this.users.push(new User(uuidv4(), name, email));
+    }
+
+    editUser(userIdx, userObj) {
+        this.users[userIdx] = {
+            ...this.users[userIdx].toJSON(),
+            name: userObj.name,
+            email: userObj.email
+        }
     }
 
     deleteUser(userId) {

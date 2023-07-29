@@ -23,9 +23,14 @@ export class UsersService {
   // }
 
   putUpdatedUser(updatedUser: User): Observable<User[]> {
-    const userId: string | undefined = updatedUser.id;
-    console.log('putUpdatedUser() userId');
-    return this.http.put<{ users: User[] }>(`/api/users/${userId}`, updatedUser).pipe(map((res) => res.users));
+    const userId: string = updatedUser.id!;
+
+    delete updatedUser.id;
+
+    return this.http.put<{ users: User[] }>(`/api/users/${userId}`, updatedUser)
+      .pipe(
+        map((res) => res.users)
+      );
   }
 
   deleteUser(id: string): Observable<User[]> {
