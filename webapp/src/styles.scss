@@ -1,0 +1,94 @@
+@import "style-includes/variables";
+
+* {
+  font-family: Lato;
+  box-sizing: border-box;
+}
+
+// Some basic styles you can replace
+
+
+// I hate bright white backgrounds
+body {
+  background-color: #333;
+  color: #999;
+  padding: 1rem;
+}
+// Example centered container box
+.container {
+  display: block;
+  max-width: 900px;
+  margin: 0 auto 1.5rem;
+  background-color: $background-color;
+  border: 1px solid $border-color;
+  color: #ccc;
+
+  &.no-border {
+    border: none;
+  }
+  &.no-background {
+    background: none;
+  }
+
+  .text-light {
+    color: $text-light;
+  }
+}
+
+// Basic Flexbox Row-Column Layout
+.row {
+  display: flex;
+  justify-content: space-between;
+
+  // Different backgrounds for rows
+  &.backgound-darker {
+    background-color: $background-color-darker;
+  }
+  &.no-backgound {
+    background: none;
+  }
+
+
+  // Borders betweem the rows
+  &:not(:last-of-type) {
+    border-bottom: 1px solid $border-color;
+  }
+
+  .column {
+    padding: 1rem;
+    flex: 1;
+    &:not(:last-child) {
+      border-right: 1px solid $border-color;
+    }
+
+    .error {
+      margin-top: 0.5rem;
+      font-size: 14px;
+      color: orange;
+    }
+
+    // Columns with specific styles
+    &.shrink {
+      flex-grow: 0;
+      flex-basis: fit-content;
+    }
+    &.tools {
+      background-color: #777;
+
+      // Space out buttons from each other
+      button:not(:last-of-type) {
+        margin-right: 1rem;
+      }
+    }
+    // Add New User column
+    &.add-new {
+      text-align: right;
+    }
+
+    // Form inputs
+    input {
+      width: 100%;
+      padding: 2px 5px 4px;
+    }
+  }
+}

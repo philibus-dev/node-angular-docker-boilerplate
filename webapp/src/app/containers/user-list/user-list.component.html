@@ -1,0 +1,45 @@
+<div class="user-list-container">
+  <h2>Users List</h2>
+
+  <div class="container no-border">
+    <app-user
+      *ngIf="selEditUser"
+      [user]="selEditUser"
+      (formSubmitted)="onFormSubmitted($event)"
+      (onCancel)="formCancel('edit')"
+    ></app-user>
+  </div>
+
+  <!-- All Users -->
+  <div class="container" *ngIf="users.length > 0">
+    <div class="row" *ngFor="let user of users" [@fadeInOutAnimation]>
+      <div class="column">
+        <span class="text-light">{{ user.name }}</span> &nbsp;
+        <small>{{ user.id }}</small>
+      </div>
+      <div class="column shrink">{{ user.email }}</div>
+      <div class="column shrink tools">
+        <button type="button" (click)="selEditUser = user">Edit</button>
+        <button type="button" (click)="deleteUser(user.id!)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container no-border">
+    <app-user
+      *ngIf="newUserFormOpen"
+      (formSubmitted)="onFormSubmitted($event)"
+      (onCancel)="formCancel('new')"
+    ></app-user>
+  </div>
+
+  <div class="container no-border no-background" [@fadeInOutAnimation]>
+    <div class="row no-background" *ngIf="!newUserFormOpen">
+      <div class="column add-new">
+        <button type="button" (click)="newUserFormOpen = true">
+          Add New User
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
