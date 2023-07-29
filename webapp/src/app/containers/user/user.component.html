@@ -1,0 +1,24 @@
+<form [formGroup]="userForm" (ngSubmit)="onFormSubmit()">
+  <div class="row background-darker" [@fadeInOutAnimation]>
+    <div class="column">
+      <input type="text" name="name" formControlName="name" placeholder="Enter name" />
+      <div class="error" *ngIf="formControls['name'].touched && formControls['name'].errors?.['required']"
+           [@fadeInOutAnimation]>
+        A name is required.
+      </div>
+    </div>
+    <div class="column">
+      <input type="email" formControlName="email" placeholder="Enter email address" />
+      <div *ngIf="formControls['email'].touched && formControls['email'].errors?.['required']" class="error">
+        Email is required.
+      </div>
+      <div *ngIf="formControls['email'].touched && formControls['email'].errors?.['email']" class="error">
+        Please enter a valid email address.
+      </div>
+    </div>
+    <div class="column shrink tools">
+      <button type="button" (click)="onFormSubmit()" [disabled]="userForm.invalid">Save</button>
+      <button type="button" (click)="onFormCancel()">Cancel</button>
+    </div>
+  </div>
+</form>

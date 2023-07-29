@@ -1,20 +1,17 @@
 const express = require('express'),
-	router = express.Router();
+	router = express.Router(),
+	UserRepo = require('../../classes/userRepo');
 
-const users = [
-	{ id: 123, name: 'John Doe1', email: 'jdoe1@example.com' },
-	{ id: 456, name: 'John Doe2', email: 'jdoe2@example.com' },
-	{ id: 789, name: 'John Doe3', email: 'jdoe3@example.com' },
-];
+const userRepo = new UserRepo();
 
 router.get('/', (req, res) => {
 	res.status(200);
-	res.json(users);
+	res.json(userRepo.getAllUsers());
 });
 
 router.get('/:id', (req, res) => {
 	const id = req.params.id;
-	const user = users.find((user) => user.id.toString() === id);
+	const user = userRepo.getUser(id);
 
 	if (user) {
 		res.status(200);
@@ -26,22 +23,63 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-	const { id, name, email } = req.body;
+	const { name, email } = req.body;
 
-	if (!id || !name || !email) {
+	if (!name || !email) {
 		res.status(400);
 		res.json({
-			message: 'request did not contain id, name, or email address.',
+			message: 'Request did not contain id, name, or email address.',
 		});
 		return false;
 	}
 
-	const newUser = { id, name, email };
-
-	users.push(newUser);
+	userRepo.addUser(name, email);
 
 	res.status(200);
-	res.json({ message: 'New user created.', newUser });
+	res.json({ message: 'New user created.', users: userRepo.getAllUsers() });
+});
+
+router.put('/:id', (req, res) => {
+	const id = req.params.id;
+
+	if (id) {
+		const editUserIdx = userRepo.getUserIndex(id);
+
+		if (editUserIdx === -1) {
+			res.status(404);
+			res.json({ message: `No user index with ID of ${id}.` });
+			return;
+		}
+
+		userRepo.editUser(editUserIdx, req.body);
+
+		res.status(200);
+		res.json({ message: 'User updated.', users: userRepo.getAllUsers() });
+
+	} else {
+		res.status(400);
+		res.json({ message: `No id was passed` });
+	}
+
+})
+
+router.delete('/:id', (req, res) => {
+	const id = req.params.id;
+
+	if (id) {
+		const deleteUser = userRepo.deleteUser(id);
+
+		if (deleteUser) {
+			res.status(200);
+			res.json({ message: `User ${id} deleted successfully.`, users: userRepo.getAllUsers() });
+		} else {
+			res.status(404);
+			res.json({ message: `No user index with ID of ${id}.` });
+		}
+	} else {
+		res.status(404);
+		res.json({ message: `You must specify an id for deletion` });
+	}
 });
 
 module.exports = router;
