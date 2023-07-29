@@ -54,7 +54,7 @@ router.put('/:id', (req, res) => {
 		userRepo.editUser(editUserIdx, req.body);
 
 		res.status(200);
-		res.json(userRepo.getAllUsers());
+		res.json({ message: 'User updated.', users: userRepo.getAllUsers() });
 
 	} else {
 		res.status(400);

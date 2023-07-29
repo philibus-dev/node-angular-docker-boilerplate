@@ -32,6 +32,7 @@ export class UserListComponent implements OnInit {
       this.usersService.postNewUser(data).subscribe({
         next: (users: User[]) => {
           this.users = users;
+          this.newUserFormOpen = false;
         },
         error: (err) => {
           console.error(err);
@@ -41,6 +42,7 @@ export class UserListComponent implements OnInit {
       this.usersService.putUpdatedUser(data).subscribe({
         next: (users: User[]) => {
           this.users = users;
+          this.selEditUser = undefined;
         },
         error: (err) => {
           console.error(err);
@@ -70,7 +72,6 @@ export class UserListComponent implements OnInit {
     this.usersService.getAllUsers().subscribe({
       next: (users: User[]) => {
         this.users = users;
-        console.log('getAllUsers():', this.users);
       },
       error: (err) => {
         console.error(err);
