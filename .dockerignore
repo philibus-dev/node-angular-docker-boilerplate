@@ -1,1 +1,5 @@
 nodeJS/node_modules
+webapp/node_modules
+Dockerfile
+.dockerignore
+docker-compose.yml

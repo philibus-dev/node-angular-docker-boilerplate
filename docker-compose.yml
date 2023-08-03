@@ -1,0 +1,68 @@
+version: '3.9'
+
+services:
+
+  #####################
+  ### WebApp Nodejs
+  #####################
+  nodeapp:
+    container_name: node_application
+    restart: unless-stopped
+    build: ./
+    ports:
+      - "8080:8080"
+    networks:
+      - node_network
+
+  #####################
+  ### Nginx Proxy
+  #####################
+  proxy:
+    container_name: nginx
+    restart: unless-stopped
+    image: nginx:alpine
+    ports:
+      - "80:8080"
+    depends_on:
+      - nodeapp
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - node_network
+
+  #####################
+  ### Mongo
+  #####################
+  mongo_db:
+    container_name: db_container
+    image: mongo:6.0.5
+    restart: always
+    ports:
+      - "2717:27017"
+    volumes:
+      - ./database/init.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - mongo_db:/data/db
+    networks:
+      - node_network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: boilerplate_application
+
+
+    #networks:
+    #  - services
+    #  - node_network
+    #ports:
+    #  - "27017:27107"
+    #environment:
+    #  MONGO_INITDB_ROOT_USERNAME: root
+    #  MONGO_INITDB_ROOT_PASSWORD: example
+    #  MONGO_INITDB_DATABASE: boilerplate_application
+
+networks:
+  node_network:
+    driver: bridge
+
+volumes:
+  mongo_db: {}
