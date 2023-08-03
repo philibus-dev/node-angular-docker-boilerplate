@@ -1,17 +1,21 @@
 const {MongoClient} = require("mongodb"),
-    ObjectId = require('mongodb').ObjectId,
-    {CONNECTION_STRING} = require("../keys/connection_string");
+    ObjectId = require('mongodb').ObjectId;
 
+require('dotenv').config();
 
 module.exports = class MongoDB {
 
-    url = CONNECTION_STRING;
+    mongoHost = process.env.MONGO_HOST;
+    mongoPort = process.env.MONGO_PORT;
+    mongoUser = process.env.MONGO_USERNAME;
+    mongoPass = process.env.MONGO_PASSWORD;
+    mongoDB = process.env.MONGO_DB;
+
+    url = `mongodb://${this.mongoUser}:${this.mongoPass}@${this.mongoHost}:${this.mongoPort}/${this.mongoDB}?connectTimeoutMS=10000`;
     client = new MongoClient(this.url);
-    dbName = 'boilerplate_application';
 
     #collectionName = '';
     #objectId = '';
-
 
     get collectionName() {
         return this.#collectionName;
@@ -49,7 +53,7 @@ module.exports = class MongoDB {
         return new Promise(async (resolve, reject) => {
             this.client.connect()
                 .then(() => {
-                    const db = this.client.db(this.dbName);
+                    const db = this.client.db(this.mongoDB);
                     resolve(db.collection((this.collectionName)))
                 })
                 .catch(err => {
