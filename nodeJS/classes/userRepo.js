@@ -1,68 +1,115 @@
-const { v4: uuidv4 } = require('uuid'),
-    User = require('./user');
-
-const users = [
-    { name: 'Charles Francis Xavier', email: 'professor.x@example.com' },
-    { name: 'Scott Summers', email: 'cyclops@example.com' },
-    { name: 'Robert Louis Drake', email: 'iceman@example.com' },
-];
+const MongoDB = require("./mongoDB"),
+    ObjectId = require('mongodb').ObjectId;
 
 module.exports = class UserRepo {
-    users = [];
+    mongoDb = new MongoDB();
 
     constructor() {
-        users.forEach((user) => {
-            this.addUser(user.name, user.email);
+        this.mongoDb.collectionName = 'users';
+    }
+
+    async getAllUsers() {
+        return new Promise(async (resolve, reject) => {
+            const collection = await this.mongoDb.connectClient();
+
+            await collection.find({}).toArray()
+                .then(async response => {
+                    await this.mongoDb.closeConnection();
+
+                    resolve(
+                        response.map(user =>
+                        {
+                            const tempUser = {
+                                ...user,
+                                id: user._id
+                            }
+
+                            delete tempUser._id;
+
+                            return tempUser;
+                        })
+                    );
+                })
+                .catch(async err => {
+                    await this.mongoDb.closeConnection();
+                    reject(err);
+                });
         });
     }
 
-    getAllUsers() {
-        return this.users.map((user) => {
-            return new User(user.id, user.name, user.email);
+    async addUser(name, email) {
+        return new Promise(async (resolve, reject) => {
+            const collection = await this.mongoDb.connectClient();
+
+            await collection.insertOne({name, email})
+                .then(async response => {
+                    await this.mongoDb.closeConnection();
+                    resolve(response);
+                })
+                .catch(async err => {
+                    await this.mongoDb.closeConnection();
+                    reject(err);
+                });
         });
     }
 
-    getUser(userId) {
-        const foundUser = this.users.find((user) => {
-            return user.id === userId;
-        });
+    async editUser(userId, userObj) {
+        let userIdObj;
 
-        if (foundUser) {
-            return new User(foundUser.id, foundUser.name, foundUser.email);
+        try {
+            userIdObj = await new ObjectId(userId);
+        } catch(err) {
+            return {status: 500, err: true, message: err.message};
         }
 
-        return false;
-    }
+        return new Promise(async (resolve, reject) => {
+            const collection = await this.mongoDb.connectClient();
 
-    getUserIndex(userId) {
-        return this.users.findIndex((user) => {
-            return user.id === userId;
+            await collection.updateOne({_id: userIdObj}, {$set: userObj})
+                .then(async response => {
+                    await this.mongoDb.closeConnection();
+
+                    if (response.modifiedCount === 0) {
+                        resolve({status: 404, err: true, message: 'user not found'});
+                    } else {
+                        resolve(response);
+                    }
+                })
+                .catch(async err => {
+                    await this.mongoDb.closeConnection();
+                    reject({status: 500, err: true, message: err});
+                });
+
         });
     }
 
-    addUser(name, email) {
-        this.users.push(new User(uuidv4(), name, email));
-    }
+    async deleteUser(userId) {
+        let userIdObj;
 
-    editUser(userIdx, userObj) {
-        this.users[userIdx] = {
-            id: this.users[userIdx].id,
-            name: userObj.name,
-            email: userObj.email
+        try {
+            userIdObj = await new ObjectId(userId);
+        } catch(err) {
+            return {status: 500, err: true, message: err.message};
         }
-    }
 
-    deleteUser(userId) {
-        const foundUserIdx = this.users.findIndex((user) => {
-            return user.id === userId;
+        return new Promise(async (resolve, reject) => {
+            const collection = await this.mongoDb.connectClient();
+
+            await collection.deleteOne({_id: userIdObj})
+                .then(async response => {
+                    await this.mongoDb.closeConnection();
+
+                    if (response.deletedCount === 0) {
+                        resolve({status: 404, err: true, message: 'user not found'});
+                    } else {
+                        resolve(response);
+                    }
+                })
+                .catch(async err => {
+                    await this.mongoDb.closeConnection();
+                    reject(err);
+                });
         });
-
-        if (foundUserIdx > -1) {
-            this.users.splice(foundUserIdx, 1);
-            return true;
-        }
-
-        return false;
     }
 
 }

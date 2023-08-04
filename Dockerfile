@@ -1,10 +1,10 @@
-FROM node:18.16.0
+FROM node:alpine
 
 WORKDIR /Boilerplate
 COPY ./webapp ./webapp
 COPY ./nodeJS ./nodeJS
-RUN cd /Boilerplate/webapp && npm install && npm run build
-RUN cd /Boilerplate/nodeJS && mkdir keys && npm install
+RUN cd /Boilerplate/webapp && npm ci && npm run build
+RUN cd /Boilerplate/nodeJS && npm ci
 RUN rm /Boilerplate/webapp -rf
 
 EXPOSE 8080

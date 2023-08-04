@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+
+  #####################
+  ### WebApp Nodejs
+  #####################
+  nodeapp:
+    container_name: node_application
+    restart: unless-stopped
+    build: ./
+    environment:
+      - MONGO_HOST=db_container
+      - MONGO_PORT=27017
+      - MONGO_USERNAME=admin
+      - MONGO_PASSWORD=admin
+      - MONGO_DB=boilerplate_application
+    ports:
+      - "80:8080"
+    networks:
+      - node_network
+
+  #####################
+  ### Mongo
+  #####################
+  mongo_db:
+    container_name: db_container
+    image: mongo:6.0.5
+    restart: always
+    ports:
+      - "2717:27017"
+    volumes:
+      - ./database/init.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - mongo_db:/data/db
+    networks:
+      - node_network
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=boilerplate_application
+
+networks:
+  node_network:
+    driver: bridge
+
+volumes:
+  mongo_db: {}
