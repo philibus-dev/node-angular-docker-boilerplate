@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from "../../models/user";
 import { UsersService } from "../../services/users.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {AuthService} from "@auth0/auth0-angular";
 
 @Component({
   selector: 'app-user-list',
@@ -19,7 +20,9 @@ export class UserListComponent implements OnInit {
   users: User[] = [];
   selEditUser: User | undefined;
 
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    public auth: AuthService) {}
 
   ngOnInit(): void {
     this.getAllUsers();
