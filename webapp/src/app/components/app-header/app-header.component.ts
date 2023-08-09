@@ -1,4 +1,6 @@
-import {Component, VERSION} from '@angular/core';
+import {Component, Inject, VERSION} from '@angular/core';
+import { AuthService } from "@auth0/auth0-angular";
+import {DOCUMENT} from "@angular/common";
 
 @Component({
   selector: 'app-header',
@@ -7,4 +9,21 @@ import {Component, VERSION} from '@angular/core';
 })
 export class AppHeaderComponent {
   angularVersion = VERSION.full;
+
+  constructor(
+    @Inject(DOCUMENT) public document: Document,
+    public auth: AuthService) {}
+
+  loginRedirect() {
+    this.auth.loginWithRedirect();
+  }
+
+  logoutRedirect() {
+    this.auth.logout({
+      logoutParams: {
+        returnTo: document.location.origin
+      }
+    });
+  }
+
 }

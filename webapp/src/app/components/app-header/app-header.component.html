@@ -1,5 +1,15 @@
 <div class="app-header-container">
   <h1>Cohesion Boilerplate</h1>
   <p>Angular {{ angularVersion }}, NodeJS, Express, Mongo</p>
+
+  <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+    <button type="button" (click)="logoutRedirect();">Logout</button>
+  </ng-container>
+
+  <ng-template #loggedOut>
+    <button type="button"(click)="loginRedirect()">Login</button>
+  </ng-template>
+
+
   <hr />
 </div>
