@@ -25,3 +25,15 @@ Run Angular:
 `cd webapp`
 
 `npm run start`
+
+## Start Docker
+
+Docker will connect to the MongoDB database, start NodeJS and start the Angular application.
+
+1. From the root directory, run the following command to create the images for MongoDB and the Javascript application: `docker-compose build`. This runs everything in the `docker-compose.yml` file.
+
+2. Run `docker-compose up` which will pull the images, create containers for them, creates volumes, and finally runs the container. You can instead run `docker-compose up -d` as "detatched" and behind the scenes, without logs and without a terminal window.
+
+3. Open a browser and go to `localhost`. No port necessary.
+
+4. Run MongoDB UI/client/editor, and make a connection to `mongodb://localhost:2717`. This port forwarding is in the `docker-compose.yml`. The entire connection string is: `mongodb://admin:admin@localhost:2717/?authMechanism=DEFAULT`
