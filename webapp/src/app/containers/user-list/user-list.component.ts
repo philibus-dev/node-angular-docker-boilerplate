@@ -71,13 +71,19 @@ export class UserListComponent implements OnInit {
   // Get all users
   getAllUsers(): void {
 
-    this.usersService.getAllUsers().subscribe({
-      next: (users: User[]) => {
-        this.users = users;
-      },
-      error: (err) => {
-        console.error(err);
+    this.auth.isAuthenticated$.subscribe((isAuth: boolean) => {
+
+      if (isAuth) {
+        this.usersService.getAllUsers().subscribe({
+          next: (users: User[]) => {
+            this.users = users;
+          },
+          error: (err) => {
+            console.error(err);
+          }
+        });
       }
+
     });
 
   }
