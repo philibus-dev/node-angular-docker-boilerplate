@@ -30,7 +30,7 @@ Run Angular:
 
 Docker will connect to the MongoDB database, start NodeJS and start the Angular application.
 
-1. Install Docker: `https://docs.docker.com/get-docker/`
+1. Install Docker: `https://docs.docker.com/get-docker/`.  Then run that Docker client.
 
 2. From the root directory, run the following command to create the images for MongoDB and the Javascript application: `docker-compose build`. This runs everything in the `docker-compose.yml` file.
 
