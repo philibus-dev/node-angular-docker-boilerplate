@@ -15,10 +15,16 @@ export class AppHeaderComponent {
     public auth: AuthService) {}
 
   loginRedirect() {
-    this.auth.loginWithRedirect();
+    // window.location.href = "/login";
+    this.auth.loginWithRedirect({openUrl(url) {
+        window.location.replace('http://localhost:8080/login');
+      }});
   }
 
   logoutRedirect() {
+
+    // window.location.href = "/logout";
+
     this.auth.logout({
       logoutParams: {
         returnTo: document.location.origin

@@ -3,6 +3,12 @@
   <p>Angular {{ angularVersion }}, NodeJS, Express, Mongo</p>
 
   <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+
+    <div *ngIf="auth.user$ | async as user">
+      Name: {{ user.name }}<br/>
+      Email: {{ user.email }}
+    </div>
+
     <button type="button" (click)="logoutRedirect();">Logout</button>
   </ng-container>
 

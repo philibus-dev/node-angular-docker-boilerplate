@@ -7,9 +7,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AppHeaderModule } from './components/app-header/app-header.module';
 
-// Import the Auth0 module from the SDK
-import { AuthModule } from '@auth0/auth0-angular';
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -18,14 +15,7 @@ import { AuthModule } from '@auth0/auth0-angular';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    AppHeaderModule,
-    AuthModule.forRoot({
-      domain: 'dev-7rkghlo8iznv4sgu.us.auth0.com',
-      clientId: '64xH2OlGPcRp23ot9NXcXfCVERDsAbtH',
-      authorizationParams: {
-        redirect_uri: window.location.origin,
-      },
-    }),
+    AppHeaderModule
   ],
   providers: [],
   bootstrap: [AppComponent],

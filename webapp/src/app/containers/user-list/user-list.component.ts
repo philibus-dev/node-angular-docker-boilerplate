@@ -25,6 +25,31 @@ export class UserListComponent implements OnInit {
     public auth: AuthService) {}
 
   ngOnInit(): void {
+
+    this.auth.isAuthenticated$.subscribe((isAuth) => {
+      console.log('change');
+      console.log(isAuth);
+      console.log('---------');
+    });
+
+    this.auth.error$.subscribe((error) => {
+      console.log('error');
+      console.error(error);
+      console.log('---------');
+    });
+
+    this.auth.appState$.subscribe((appState) => {
+      console.log('appState');
+      console.log(appState);
+      console.log('----------');
+    });
+
+    this.auth.idTokenClaims$.subscribe((idTokenClaims) => {
+      console.log('idTokenClaims');
+      console.log(idTokenClaims);
+      console.log('-----------');
+    });
+
     this.getAllUsers();
   }
 
