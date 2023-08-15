@@ -1,28 +1,45 @@
 const express = require('express'),
 	router = express.Router(),
+	{ requiresAuth } = require('express-openid-connect'),
 	UserRepo = require('../../classes/userRepo');
 
 const userRepo = new UserRepo();
 
-router.get('/', (req, res) => {
-	res.status(200);
-	res.json(userRepo.getAllUsers());
+router.get('/', requiresAuth(), async (req, res) => {
+	try {
+		const allUsersResp = await userRepo.getAllUsers();
+
+		if (allUsersResp) {
+			res.status(200);
+			res.json(allUsersResp);
+		} else {
+			res.status(500);
+			res.json({message: 'Unable to get all users'})
+		}
+
+	} catch(err) {
+		res.status(500);
+		res.json({message: err})
+	}
+
 });
 
-router.get('/:id', (req, res) => {
-	const id = req.params.id;
-	const user = userRepo.getUser(id);
+// Gets logged in user from Auth0
+router.get('/currUser', (req, res) => {
+	const oidc = req.oidc;
+	const user = oidc.user;
 
 	if (user) {
 		res.status(200);
 		res.json(user);
-	} else {
-		res.status(404);
-		res.json({ message: `User ${id} not found.` });
+		return true;
 	}
+
+	res.status(401);
+	res.json({message: 'User is not authenticated!'});
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
 	const { name, email } = req.body;
 
 	if (!name || !email) {
@@ -33,29 +50,36 @@ router.post('/', (req, res) => {
 		return false;
 	}
 
-	userRepo.addUser(name, email);
+	await userRepo.addUser(name, email)
+		.catch(err => {
+			console.error(err);
+			res.status(500);
+			res.json({message: err.message});
+
+			return false;
+		});
+
+	const allUsers = await userRepo.getAllUsers();
 
 	res.status(200);
-	res.json({ message: 'New user created.', users: userRepo.getAllUsers() });
+	res.json({ message: 'New user created.', users: allUsers });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
 	const id = req.params.id;
 
 	if (id) {
-		const editUserIdx = userRepo.getUserIndex(id);
+		const editUserResp = await userRepo.editUser(id, {name: req.body.name, email: req.body.email});
 
-		if (editUserIdx === -1) {
-			res.status(404);
-			res.json({ message: `No user index with ID of ${id}.` });
-			return;
+		if (editUserResp && !editUserResp.err) {
+			const allUsers = await userRepo.getAllUsers();
+
+			res.status(200);
+			res.json({ message: 'User updated', users: allUsers });
+		} else {
+			res.status(editUserResp.status);
+			res.json({message: editUserResp.message});
 		}
-
-		userRepo.editUser(editUserIdx, req.body);
-
-		res.status(200);
-		res.json({ message: 'User updated.', users: userRepo.getAllUsers() });
-
 	} else {
 		res.status(400);
 		res.json({ message: `No id was passed` });
@@ -63,18 +87,20 @@ router.put('/:id', (req, res) => {
 
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
 	const id = req.params.id;
 
 	if (id) {
-		const deleteUser = userRepo.deleteUser(id);
+		const deleteUserResp = await userRepo.deleteUser(id);
 
-		if (deleteUser) {
+		if (deleteUserResp && !deleteUserResp.err) {
+			const allUsers = await userRepo.getAllUsers();
+
 			res.status(200);
-			res.json({ message: `User ${id} deleted successfully.`, users: userRepo.getAllUsers() });
+			res.json({ message: `User ${id} deleted successfully.`, users: allUsers });
 		} else {
-			res.status(404);
-			res.json({ message: `No user index with ID of ${id}.` });
+			res.status(deleteUserResp.status);
+			res.json({message: deleteUserResp.message});
 		}
 	} else {
 		res.status(404);
