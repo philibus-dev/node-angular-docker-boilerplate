@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { User } from "../../models/user";
 import { UsersService } from "../../services/users.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import {AuthService} from "@auth0/auth0-angular";
 
 @Component({
   selector: 'app-user-list',
@@ -20,36 +19,9 @@ export class UserListComponent implements OnInit {
   users: User[] = [];
   selEditUser: User | undefined;
 
-  constructor(
-    private usersService: UsersService,
-    public auth: AuthService) {}
+  constructor(private usersService: UsersService) {}
 
   ngOnInit(): void {
-
-    this.auth.isAuthenticated$.subscribe((isAuth) => {
-      console.log('change');
-      console.log(isAuth);
-      console.log('---------');
-    });
-
-    this.auth.error$.subscribe((error) => {
-      console.log('error');
-      console.error(error);
-      console.log('---------');
-    });
-
-    this.auth.appState$.subscribe((appState) => {
-      console.log('appState');
-      console.log(appState);
-      console.log('----------');
-    });
-
-    this.auth.idTokenClaims$.subscribe((idTokenClaims) => {
-      console.log('idTokenClaims');
-      console.log(idTokenClaims);
-      console.log('-----------');
-    });
-
     this.getAllUsers();
   }
 
@@ -96,19 +68,13 @@ export class UserListComponent implements OnInit {
   // Get all users
   getAllUsers(): void {
 
-    this.auth.isAuthenticated$.subscribe((isAuth: boolean) => {
-
-      if (isAuth) {
-        this.usersService.getAllUsers().subscribe({
-          next: (users: User[]) => {
-            this.users = users;
-          },
-          error: (err) => {
-            console.error(err);
-          }
-        });
+    this.usersService.getAllUsers().subscribe({
+      next: (users: User[]) => {
+        this.users = users;
+      },
+      error: (err) => {
+        console.error(err);
       }
-
     });
 
   }

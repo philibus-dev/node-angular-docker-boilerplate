@@ -2,14 +2,16 @@
   <h1>Cohesion Boilerplate</h1>
   <p>Angular {{ angularVersion }}, NodeJS, Express, Mongo</p>
 
-  <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+  <ng-container *ngIf="currUser; else loggedOut">
 
-    <div *ngIf="auth.user$ | async as user">
-      Name: {{ user.name }}<br/>
-      Email: {{ user.email }}
+    <div>
+      Name: {{ currUser.name }}<br/>
+      Email: {{ currUser.email }}
     </div>
 
-    <button type="button" (click)="logoutRedirect();">Logout</button>
+    <button type="button" (click)="logoutRedirect();">Logout</button> |
+    <a [routerLink]="['/welcome']">Welcome</a> |
+    <a [routerLink]="['user-list']">User List</a>
   </ng-container>
 
   <ng-template #loggedOut>

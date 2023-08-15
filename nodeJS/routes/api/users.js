@@ -25,7 +25,7 @@ router.get('/', requiresAuth(), async (req, res) => {
 });
 
 // Gets logged in user from Auth0
-router.get('/currUser', requiresAuth(), (req, res) => {
+router.get('/currUser', (req, res) => {
 	const oidc = req.oidc;
 	const user = oidc.user;
 
@@ -35,8 +35,8 @@ router.get('/currUser', requiresAuth(), (req, res) => {
 		return true;
 	}
 
-	res.status(404);
-	res.json({message: 'No logged in user found!'});
+	res.status(401);
+	res.json({message: 'User is not authenticated!'});
 });
 
 router.post('/', async (req, res) => {

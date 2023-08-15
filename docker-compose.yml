@@ -15,6 +15,10 @@ services:
       - MONGO_USERNAME=admin
       - MONGO_PASSWORD=admin
       - MONGO_DB=boilerplate_application
+      - AUTHO_BASE_URL=http://localhost
+      - AUTHO_CLIENT_ID=<AUTH0 clientId>
+      - AUTHO_SECRET=<AUTH0 secret>
+      - AUTHO_DOMAIN=<AUTH0 domain>
     ports:
       - "80:8080"
     networks:

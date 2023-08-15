@@ -1,4 +1,4 @@
-<div class="user-list-container" *ngIf="auth.isAuthenticated$ | async; else unauthenticated">
+<div class="user-list-container">
   <h2>Users List</h2>
 
   <div class="container no-border">
@@ -43,7 +43,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #unauthenticated>
-  Please login to view
-</ng-template>

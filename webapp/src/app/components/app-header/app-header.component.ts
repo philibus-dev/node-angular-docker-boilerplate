@@ -1,6 +1,7 @@
-import {Component, Inject, VERSION} from '@angular/core';
-import { AuthService } from "@auth0/auth0-angular";
-import {DOCUMENT} from "@angular/common";
+import {Component, VERSION} from '@angular/core';
+import {AuthService} from "../../services/auth.service";
+import {AuthUser} from "../../models/authUser";
+import {UsersService} from "../../services/users.service";
 
 @Component({
   selector: 'app-header',
@@ -10,26 +11,38 @@ import {DOCUMENT} from "@angular/common";
 export class AppHeaderComponent {
   angularVersion = VERSION.full;
 
+  currUser: AuthUser | undefined;
+
   constructor(
-    @Inject(DOCUMENT) public document: Document,
-    public auth: AuthService) {}
+    private authService: AuthService,
+    private userService: UsersService) {
+
+    // Add a subscribe to get curr user signal
+    this.authService.$currUser.subscribe({
+      next: (authUser) => {
+
+        if (authUser && typeof authUser !== 'boolean') {
+          this.currUser = authUser;
+        } else {
+          this.currUser = undefined;
+        }
+
+      }
+
+    });
+
+    if (!this.currUser) {
+      this.userService.getCurrUser().subscribe();
+    }
+
+  }
 
   loginRedirect() {
-    // window.location.href = "/login";
-    this.auth.loginWithRedirect({openUrl(url) {
-        window.location.replace('http://localhost:8080/login');
-      }});
+    window.location.replace("/login");
   }
 
   logoutRedirect() {
-
-    // window.location.href = "/logout";
-
-    this.auth.logout({
-      logoutParams: {
-        returnTo: document.location.origin
-      }
-    });
+    window.location.replace("/logout");
   }
 
 }

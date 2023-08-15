@@ -7,7 +7,7 @@ const PROXY_CONFIG = {
   "/login": {
     target: "http://127.0.0.1:8080",
     secure: false,
-    changeOrigin: true,
+    changeOrigin: false,
   },
   "/callback": {
     target: "http://127.0.0.1:8080",
@@ -17,7 +17,7 @@ const PROXY_CONFIG = {
   "/logout": {
     target: "http://127.0.0.1:8080",
     secure: false,
-    changeOrigin: true,
+    changeOrigin: false,
   },
 };
 
