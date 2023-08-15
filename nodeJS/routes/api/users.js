@@ -1,11 +1,11 @@
 const express = require('express'),
 	router = express.Router(),
+	{ requiresAuth } = require('express-openid-connect'),
 	UserRepo = require('../../classes/userRepo');
 
 const userRepo = new UserRepo();
 
-router.get('/', async (req, res) => {
-
+router.get('/', requiresAuth(), async (req, res) => {
 	try {
 		const allUsersResp = await userRepo.getAllUsers();
 
@@ -22,6 +22,21 @@ router.get('/', async (req, res) => {
 		res.json({message: err})
 	}
 
+});
+
+// Gets logged in user from Auth0
+router.get('/currUser', (req, res) => {
+	const oidc = req.oidc;
+	const user = oidc.user;
+
+	if (user) {
+		res.status(200);
+		res.json(user);
+		return true;
+	}
+
+	res.status(401);
+	res.json({message: 'User is not authenticated!'});
 });
 
 router.post('/', async (req, res) => {

@@ -1,5 +1,23 @@
 <div class="app-header-container">
   <h1>Cohesion Boilerplate</h1>
   <p>Angular {{ angularVersion }}, NodeJS, Express, Mongo</p>
+
+  <ng-container *ngIf="currUser; else loggedOut">
+
+    <div>
+      Name: {{ currUser.name }}<br/>
+      Email: {{ currUser.email }}
+    </div>
+
+    <button type="button" (click)="logoutRedirect();">Logout</button> |
+    <a [routerLink]="['/welcome']">Welcome</a> |
+    <a [routerLink]="['user-list']">User List</a>
+  </ng-container>
+
+  <ng-template #loggedOut>
+    <button type="button"(click)="loginRedirect()">Login</button>
+  </ng-template>
+
+
   <hr />
 </div>
