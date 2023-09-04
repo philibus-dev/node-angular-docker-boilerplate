@@ -1,5 +1,4 @@
-const {MongoClient} = require("mongodb"),
-    ObjectId = require('mongodb').ObjectId;
+const mongoose = require('mongoose');
 
 require('dotenv').config();
 
@@ -12,52 +11,50 @@ module.exports = class MongoDB {
     mongoDB = process.env.MONGO_DB;
 
     url = `mongodb://${this.mongoUser}:${this.mongoPass}@${this.mongoHost}:${this.mongoPort}/${this.mongoDB}?connectTimeoutMS=10000`;
-    client = new MongoClient(this.url);
 
-    #collectionName = '';
-    #objectId = '';
+    #model = null;
 
-    get collectionName() {
-        return this.#collectionName;
+    constructor() {
+        mongoose.set('strictQuery', false);
     }
 
-    set collectionName(collectionName) {
-        this.#collectionName = collectionName;
+    get model() {
+        return this.#model;
     }
 
-    get objectId() {
-        return this.#objectId;
+    setSchema(modelName, schema) {
+        const newSchema = new mongoose.Schema(schema);
+        this.#model = mongoose.model(modelName, newSchema);
     }
 
-    set objectId(objectId) {
-        this.#objectId = objectId;
-    }
+    async save(newObject) {
+        const saveObj = new this.model(newObject);
 
-    convertToObjectId(id) {
-        return new ObjectId(id);
-    }
-
-    getIdFromObjectId(objectId) {
-        return objectId.toHexString();
+        return new Promise((resolve, reject) => {
+            saveObj.save()
+                .then((res) => {resolve(res)})
+                .catch((err) => {reject(err)});
+        })
     }
 
     async closeConnection() {
         return new Promise((resolve, reject) => {
-            this.client.close()
-                .then(() => resolve())
+            mongoose.disconnect()
+                .then(() => {console.log('db connection closed'); resolve()})
                 .catch(err => reject(err));
         });
     }
 
-    async connectClient() {
-        return new Promise(async (resolve, reject) => {
-            this.client.connect()
+    async openConnection() {
+        return new Promise((resolve, reject) => {
+            mongoose.connect(this.url)
                 .then(() => {
-                    const db = this.client.db(this.mongoDB);
-                    resolve(db.collection((this.collectionName)))
+                    console.log('db connection opened');
+                    resolve();
                 })
-                .catch(err => {
-                    reject(err)
+                .catch((e) => {
+                    console.error(e);
+                    reject(e);
                 });
         });
     }
