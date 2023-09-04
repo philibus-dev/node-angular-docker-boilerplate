@@ -27,6 +27,10 @@ module.exports = class MongoDB {
         this.#model = mongoose.model(modelName, newSchema);
     }
 
+    convertToObjectId(id) {
+        return new mongoose.Types.ObjectId(id);
+    }
+
     async save(newObject) {
         const saveObj = new this.model(newObject);
 

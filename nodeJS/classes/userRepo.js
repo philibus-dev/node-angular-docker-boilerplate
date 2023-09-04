@@ -1,6 +1,4 @@
-const MongoDB = require("./mongoDB"),
-    ObjectId = require('mongodb').ObjectId;
-const {Error} = require("mongoose");
+const MongoDB = require("./mongoDB");
 
 module.exports = class UserRepo {
     mongoDb = new MongoDB();
@@ -73,7 +71,7 @@ module.exports = class UserRepo {
         let userIdObj;
 
         try {
-            userIdObj = await new ObjectId(userId);
+            userIdObj = this.mongoDb.convertToObjectId(userId);
         } catch(err) {
             return {status: 500, err: true, message: err.message};
         }
@@ -103,7 +101,7 @@ module.exports = class UserRepo {
         let userIdObj;
 
         try {
-            userIdObj = await new ObjectId(userId);
+            userIdObj = this.mongoDb.convertToObjectId(userId);
         } catch(err) {
             return {status: 500, err: true, message: err.message};
         }
