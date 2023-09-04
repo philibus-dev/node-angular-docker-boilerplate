@@ -26,7 +26,7 @@ Run Angular:
 
 `npm run start`
 
-## Start Docker
+## Run Project Inside Docker Container
 
 Docker will connect to the MongoDB database, start NodeJS and start the Angular application.
 
@@ -38,5 +38,8 @@ Docker will connect to the MongoDB database, start NodeJS and start the Angular 
 
 4. Open a browser and go to `localhost`. No port necessary.
 
-5. Run MongoDB UI/client/editor, and make a connection to `mongodb://localhost:2717`. This port forwarding is in the `docker-compose.yml`. The entire connection string is: `mongodb://admin:admin@localhost:2717/?authMechanism=DEFAULT`
+## Run MongoDB Locally
 
+1. Run MongoDB UI/client/editor, and make a connection to `mongodb://localhost:2717`. This port forwarding is in the `docker-compose.yml`. The entire connection string is: `mongodb://admin:admin@localhost:2717/?authMechanism=DEFAULT`.
+
+2. Open a browser and go to `http://localhost:4200/`.
