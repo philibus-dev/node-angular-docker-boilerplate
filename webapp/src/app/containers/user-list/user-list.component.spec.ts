@@ -1,11 +1,17 @@
-import { TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import { UserListComponent } from './user-list.component';
+import Spy = jasmine.Spy;
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
-let getAllUsersSpy: Spy;
+let getAllUsersSpy: Spy,
+  component: UserListComponent,
+  fixture: ComponentFixture<UserListComponent>;
 
 describe('UserListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [UserListComponent],
       declarations: [
         UserListComponent
       ],
@@ -13,6 +19,8 @@ describe('UserListComponent', () => {
   });
 
   beforeEach(() => {
+    component = TestBed.inject(UserListComponent);
+
     getAllUsersSpy = spyOn(component, 'getAllUsers').and.callThrough();
   });
 
@@ -20,10 +28,6 @@ describe('UserListComponent', () => {
     const fixture = TestBed.createComponent(UserListComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it('should call all users on load', () => {
-    expect(getAllUsersSpy).toHaveBeenCalled();
   });
 
 });

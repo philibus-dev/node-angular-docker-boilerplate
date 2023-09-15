@@ -1,6 +1,8 @@
-import { TestBed } from '@angular/core/testing';
+import {fakeAsync, TestBed} from '@angular/core/testing';
 
 import { UsersService } from './users.service';
+import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {User} from "../models/user";
 
 describe('UsersService', () => {
   let service: UsersService,
@@ -8,12 +10,17 @@ describe('UsersService', () => {
 
   const mockUsers: User[] = [
     {
-      userId: 'abc123'
+      id: '123-321',
+      name: 'John Tester',
+      email: 'jTester@email.com'
     }
   ];
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+    });
+
     service = TestBed.inject(UsersService);
     httpControler = TestBed.inject(HttpTestingController);
   });
