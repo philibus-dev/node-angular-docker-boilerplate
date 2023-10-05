@@ -6,3 +6,5 @@ nodeJS/node_modules
 nodeJS/public/webapp
 nodeJS/keys
 nodeJS/.env
+nodeJS/coverage
+nodeJS/.nyc_output

@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node bin/boilerplate",
-    "test": "mocha"
+    "test": "mocha '**/*.spec.js' --recursive --reporter spec --timeout 60000 --exit",
+    "test-report": "nyc --check-coverage=true --reporter=html --reporter=text mocha '**/*.spec.js' '**/*.js' --recursive"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -12,16 +13,18 @@
     "debug": "~2.6.9",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
     "express-openid-connect": "^2.16.0",
     "express-rate-limit": "^6.10.0",
     "http-errors": "~1.6.3",
     "jade": "^0.29.0",
     "mongoose": "^7.5.0",
-    "morgan": "~1.9.1",
-    "request": "^2.88.2"
+    "morgan": "~1.9.1"
   },
   "devDependencies": {
     "chai": "^4.3.8",
-    "mocha": "^10.2.0"
+    "mocha": "^10.2.0",
+    "mocha-junit-reporter": "^2.2.1",
+    "nyc": "^15.1.0"
   }
 }
