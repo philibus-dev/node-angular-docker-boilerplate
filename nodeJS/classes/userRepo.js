@@ -9,7 +9,12 @@ module.exports = class UserRepo {
             email: String
         }
 
-        this.mongoDb.setSchema('users', userSchema);
+        try {
+            this.mongoDb.setSchema('users', userSchema);
+        } catch(e) {
+            console.error(e);
+        }
+
     }
 
     async openConnection() {
