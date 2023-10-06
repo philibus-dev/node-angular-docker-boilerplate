@@ -1,9 +1,12 @@
 const MongoDB = require("./mongoDB");
+const {mongo} = require("mongoose");
 
 module.exports = class UserRepo {
-    mongoDb = new MongoDB();
+    mongoDb;
 
-    constructor() {
+    constructor(mongoDbInj = null) {
+        this.mongoDb = (mongoDbInj) ? mongoDbInj : new MongoDB();
+
         const userSchema = {
             name: String,
             email: String

@@ -50,12 +50,14 @@ describe('Test MongoDB Class', () => {
     });
 
     it('should handle close connection error correctly', async () => {
-        mongooseMock.disconnect = () => {
+        const modifiedMock = { ...mongooseMock };
+
+        modifiedMock.disconnect = () => {
             return new Promise((resolve, reject) => {
                 reject({message: 'disconnect failed'});
             });
         }
-        const mongoDB = new MongoDB(mongooseMock);
+        const mongoDB = new MongoDB(modifiedMock);
 
         try {
             const result = await mongoDB.closeConnection();
@@ -65,7 +67,9 @@ describe('Test MongoDB Class', () => {
     });
 
     it('should handle successful save correctly', async () => {
-        mongooseMock.models['users'] = (newObject) => {
+        const modifiedMock = { ...mongooseMock };
+
+        modifiedMock.models['users'] = (newObject) => {
             return {
                 save: () => {
                     return new Promise((resolve, reject) => {
@@ -75,7 +79,7 @@ describe('Test MongoDB Class', () => {
             }
         }
 
-        const mongoDB = new MongoDB(mongooseMock);
+        const mongoDB = new MongoDB(modifiedMock);
 
         const result = await mongoDB.save({name: 'Joe Tester', email: 'tester@testing.com'});
 
@@ -83,7 +87,9 @@ describe('Test MongoDB Class', () => {
     });
 
     it('should handle error save correctly', async () => {
-        mongooseMock.models['users'] = (newObject) => {
+        const modifiedMock = { ...mongooseMock };
+
+        modifiedMock.models['users'] = (newObject) => {
             return {
                 save: () => {
                     return new Promise((resolve, reject) => {
@@ -93,7 +99,7 @@ describe('Test MongoDB Class', () => {
             }
         }
 
-        const mongoDB = new MongoDB(mongooseMock);
+        const mongoDB = new MongoDB(modifiedMock);
 
         try {
             const result = await mongoDB.save({name: 'Joe Tester', email: 'tester@testing.com'});
