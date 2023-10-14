@@ -1,6 +1,7 @@
 ./.idea
 .idea
 ./.git
+.DS_store
 
 nodeJS/node_modules
 nodeJS/public/webapp
