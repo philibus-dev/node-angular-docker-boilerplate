@@ -8,3 +8,5 @@ nodeJS/keys
 nodeJS/.env
 nodeJS/coverage
 nodeJS/.nyc_output
+
+docker-compose-local.yml
