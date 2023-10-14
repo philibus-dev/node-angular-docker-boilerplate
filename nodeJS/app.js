@@ -3,6 +3,7 @@ const createError = require('http-errors'),
 	path = require('path'),
 	cookieParser = require('cookie-parser'),
 	logger = require('morgan'),
+	RateLimit = require('express-rate-limit'),
 	{ auth } = require('express-openid-connect'),
 	cors = require('cors');
 
@@ -11,6 +12,12 @@ const indexRouter = require('./routes/index'),
 
 const app = express();
 
+const limiter = RateLimit({
+	windowMs: .5 * 60 * 1000, // 30 seconds
+	max: 100, // max 100 request per windowMS
+});
+
+app.use(limiter);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
