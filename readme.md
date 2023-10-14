@@ -26,6 +26,18 @@ Run Angular:
 
 `npm run start`
 
+## Configure Auth0 - Required for Authentication
+
+1. Make an account at [Auth0.com](https://auth0.com/).
+
+2. Create an "Application" in Auth0.  Choose Application Type of "Regular Web Application".
+
+3. Under **Allowed Callback URLs** enter:
+
+```
+http://localhost:4200, http://localhost:8080, http://localhost:4200/callback, http://localhost:8080/callback, http://localhost, http://localhost/callback
+```
+
 ## Run Project Inside Docker Container
 
 Docker will connect to the MongoDB database, start NodeJS and start the Angular application.
