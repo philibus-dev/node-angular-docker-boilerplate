@@ -1,6 +1,6 @@
-# Node Angular Docker - Boilerplate
+# MEAN Boilerplate with Authentication and Containers
 
-Boilerplate with everything connected.
+Boilerplate with everything needed for a full stack authenticated web application.  Angular v16, Node v18 with Express, MongoDB with Mongoose, Authentication with Auth0, and "Containerized" with Docker.
 
 ## Installation
 
@@ -12,7 +12,7 @@ Use Node version v18.10 (if you use Node Version Manager)
 
 `cd webapp` and then `npm install`.
 
-## Start the Server and the Angular Application
+## Start the Server and the Angular Application Locally
 
 Start the server (uses port 8080):
 
@@ -32,9 +32,14 @@ And then copy over "Domain", "Client ID" and "Client Secret" from the Applicatio
 
 IMPORTANT!  Don't forget `https://` in the beginning of "Domain"
 
-## Run Project Inside Docker Container
+## Setup for Running Project Inside Docker Container
 
 Docker will connect to the MongoDB database, start NodeJS and start the Angular application.
+
+An example `docker-compose.yml` file has been provided, but you will need to populate it with your own credentials provided from Auth0, specifically:
+- AUTHO_CLIENT_ID=<AUTH0 clientId>
+- AUTHO_SECRET=<AUTH0 secret>
+- AUTHO_DOMAIN=<AUTH0 domain>
 
 1. Install Docker: `https://docs.docker.com/get-docker/`.  Then run that Docker client.
 
@@ -52,19 +57,23 @@ docker-compose -f docker-compose-local.yml build
 
   - Tip: If you just make a change to the above .yml file, you can just `down` and then `up`, instead of doing another `build` and then `up`.  "Build" compiles all your application code into a container.  So if it's the same, you don't need to compile again.
 
-3. Run `docker-compose up` which will pull the images, create containers for them, creates volumes, and finally runs the container. You can instead run `docker-compose up -d` as "detatched" and behind the scenes, without logs and without a terminal window.
+3. Run `docker-compose up` which will pull the images, create containers for them, creates volumes, and finally runs the container. You can instead run `docker-compose up -d` as "detatched" mode, which will run it behind the scenes, without logs and without displaying everything to the terminal window.
 
-4. Open a browser and go to `localhost`. No port necessary.
+4. Open a browser and go to `localhost`. No port number necessary.
 
-5. In the instance when it's running on a web server (prod) and you've used `-d` to use "detached" mode, you would use this to stop the container (since detached mode is for running it outside the terminal and you can't see it)
+5. When running in production in "detached" mode with `-d`, use the following command to stop the container:
 ```
 docker compose down
 ```
 
- - Tip: to see all running Docker containers, run `docker ps`
+ - Tip: to see all running Docker containers, run 
+ ```
+ docker ps
+ ```
 
 ## Run MongoDB Locally
 
 1. Run MongoDB UI/client/editor, and make a connection to `mongodb://localhost:2717`. This port forwarding is in the `docker-compose.yml`. The entire connection string is: `mongodb://admin:admin@localhost:2717/?authMechanism=DEFAULT`.
 
 2. Open a browser and go to `http://localhost:4200/`.
+
