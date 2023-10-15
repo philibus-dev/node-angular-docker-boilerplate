@@ -77,3 +77,11 @@ docker compose down
 
 2. Open a browser and go to `http://localhost:4200/`.
 
+## Running Unit Tests
+
+Tests are in `*.spec.ts` files, and use `Karma`, `Jasmine`, and `Mocha`.
+
+Run the tests from the `nodejs` and `webapp` folders by running
+```
+npm run  test-report
+```
