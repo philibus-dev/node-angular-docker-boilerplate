@@ -77,11 +77,18 @@ docker compose down
 
 2. Open a browser and go to `http://localhost:4200/`.
 
-## Running Unit Tests
+## Unit Tests Coverage
 
-Tests are in `*.spec.ts` files, and use `Karma`, `Jasmine`, and `Mocha`.
+Unit Tests are written in `*.spec.ts` files, and use `Karma`, `Jasmine`, and `Mocha`.
 
-Run the tests from the `nodejs` and `webapp` folders by running
+Run test coverage reports from the `nodejs` and `webapp` folders by running
 ```
 npm run  test-report
 ```
+
+After running the above commands, a coverage HTML file will be created in the respective folder for you to view.  For instance, running a test-report in the `webapp` folder will create an `index.html` file in a folder like this:
+```
+node-angular-docker-boilerplate/webapp/coverage/Chrome Headless 116.0.5845.96 (Mac OS 10.15.7)
+```
+
+(The folder name in the above example will differ from yours depending on what version of Chrome you are using)
