@@ -92,3 +92,8 @@ node-angular-docker-boilerplate/webapp/coverage/Chrome Headless 116.0.5845.96 (M
 ```
 
 (The folder name in the above example will differ from yours depending on what version of Chrome you are using)
+
+Testing with Chrome
+```
+npm run test-local
+```

@@ -4,6 +4,9 @@ import { AuthService } from '../../services/auth.service';
 import { UsersService } from '../../services/users.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { AuthUser } from '../../models/authUser';
+import Spy = jasmine.Spy;
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AppHeaderComponent', () => {
   let component: AppHeaderComponent;
@@ -19,13 +22,23 @@ describe('AppHeaderComponent', () => {
     getCurrUser: () => of(null), // Mock the getCurrUser method
   };
 
+  beforeAll(() => {
+    window.onbeforeunload = () => 'Keep from actually navigating away.'
+  });
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AppHeaderComponent],
       providers: [
         { provide: AuthService, useValue: authServiceStub },
-        { provide: UsersService, useValue: usersServiceStub },
+        { provide: UsersService, useValue: usersServiceStub }
       ],
+      imports: [
+        RouterTestingModule.withRoutes([
+          { path: 'login', redirectTo: '' },
+          { path: 'logout', redirectTo: '' }
+        ])
+      ]
     });
 
     fixture = TestBed.createComponent(AppHeaderComponent);
@@ -50,6 +63,18 @@ describe('AppHeaderComponent', () => {
     authService.$currUser.next(fakeAuthUser);
 
     expect(component.currUser).toEqual(fakeAuthUser);
+  });
+
+  it('should redirect when loginRedirect() is called', () => {
+    const routerNavigateSpy: Spy = spyOn(component.router, 'navigate').and.stub()
+    component.loginRedirect();
+    expect(routerNavigateSpy).toHaveBeenCalledWith(['/login']);
+  });
+
+  it('should redirect when looutRedirect() is called', () => {
+    const routerNavigateSpy: Spy = spyOn(component.router, 'navigate').and.stub()
+    component.logoutRedirect();
+    expect(routerNavigateSpy).toHaveBeenCalledWith(['/logout']);
   });
 
   // it('should set currUser to undefined when AuthService emits a boolean value', () => {
