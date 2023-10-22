@@ -1,9 +1,28 @@
 const expect = require('chai').expect,
-    sinon = require('sinon');
+    sinon = require('sinon'),
+    path = require("path");
 
 const controller = require("../../controllers/index.controller");
 
 describe('Test Index Controller', () => {
+    let res,
+        req = { body: {} },
+        redirectStub,
+        sendFileStub,
+        statusStub;
+
+    beforeEach(() => {
+        res = {
+            redirect: () => {},
+            sendFile: () => {},
+            status: (val) => {}
+        }
+
+        redirectStub = sinon.stub(res, 'redirect');
+        sendFileStub = sinon.stub(res, 'sendFile');
+        statusStub = sinon.stub(res, 'status');
+    });
+
     afterEach(() => {
         sinon.restore();
     });
@@ -13,14 +32,22 @@ describe('Test Index Controller', () => {
     });
 
     it('should redirect to webapp', async () => {
-        const mResult = 'success';
-        sinon.stub(service, 'create').resolves(mResult);
-        const mReq = { body: {} };
-        const mReply = { code: sinon.stub().returnsThis(), send: sinon.stub() };
-        controller.redirect_to_webapp(mReq, mReply);
-        await flushPromises();
-        sinon.assert.calledWith(mReply.code, 201);
-        sinon.assert.calledWith(mReply.send, 'success');
+        controller.redirect_to_webapp(req, res);
+
+        expect(redirectStub.calledWith(301, '/webapp')).to.be.true;
+    });
+
+    it('should send index file', () => {
+        controller.send_index_html(req, res);
+
+        expect(sendFileStub.calledWith(path.join(`${__dirname}/../../public/webapp/index.html`))).to.be.true;
+    });
+
+    it('should set status to 404 and send index file', () => {
+        controller.handleFourOfour(req, res);
+
+        expect(statusStub.calledWith(404)).to.be.true;
+        expect(sendFileStub.calledWith(path.join(`${__dirname}/../../public/webapp/index.html`))).to.be.true;
     });
 
 });
