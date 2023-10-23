@@ -1,5 +1,4 @@
 const MongoDB = require("./mongoDB");
-const {mongo} = require("mongoose");
 
 module.exports = class UserRepo {
     mongoDb;
