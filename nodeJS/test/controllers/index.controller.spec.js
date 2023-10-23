@@ -2,7 +2,8 @@ const expect = require('chai').expect,
     sinon = require('sinon'),
     path = require("path");
 
-const controller = require("../../controllers/index.controller");
+const Controller = require("../../controllers/index.controller"),
+    controller = new Controller();
 
 describe('Test Index Controller', () => {
     let res,
