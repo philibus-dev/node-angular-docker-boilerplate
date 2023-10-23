@@ -73,8 +73,10 @@ describe('UsersService', () => {
     // const getCurrUserSpy: Spy = spyOn(service, 'getCurrUser').and.returnValue(throwError({status: 401}));
     const updateCurrUserSpy: Spy = spyOn(TestBed.inject(AuthService), 'updateCurrUser').and.callFake(() => {});
 
-    service.getCurrUser().subscribe((res) => {}, (e: HttpErrorResponse) => {
-      expect(updateCurrUserSpy).toHaveBeenCalledWith(null);
+    service.getCurrUser().subscribe({
+      next: (data) => {
+        expect(updateCurrUserSpy).toHaveBeenCalledWith(null);
+      }
     });
 
     const req = httpControler.expectOne({
