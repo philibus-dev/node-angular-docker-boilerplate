@@ -4,13 +4,11 @@ import { UsersService } from './users.service';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {User} from "../models/user";
 import Spy = jasmine.Spy;
-import {throwError} from "rxjs";
 import {AuthService} from "./auth.service";
-import {HttpErrorResponse} from "@angular/common/http";
 
 describe('UsersService', () => {
   let service: UsersService,
-    httpControler: HttpTestingController;
+    httpController: HttpTestingController;
 
   const mockUsers: User[] = [
     {
@@ -35,7 +33,7 @@ describe('UsersService', () => {
     });
 
     service = TestBed.inject(UsersService);
-    httpControler = TestBed.inject(HttpTestingController);
+    httpController = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {
@@ -47,7 +45,7 @@ describe('UsersService', () => {
       expect(res).toEqual(mockUsers);
     });
 
-    const req = httpControler.expectOne({
+    const req = httpController.expectOne({
       method: 'GET',
       url: '/api/users'
     });
@@ -61,7 +59,7 @@ describe('UsersService', () => {
       expect(res).toEqual(testUser);
     });
 
-    const req = httpControler.expectOne({
+    const req = httpController.expectOne({
       method: 'GET',
       url: '/api/users/currUser'
     });
@@ -79,7 +77,7 @@ describe('UsersService', () => {
       }
     });
 
-    const req = httpControler.expectOne({
+    const req = httpController.expectOne({
       method: 'GET',
       url: '/api/users/currUser'
     });
@@ -93,7 +91,7 @@ describe('UsersService', () => {
       expect(res).toEqual(mockUsers);
     });
 
-    const req = httpControler.expectOne({
+    const req = httpController.expectOne({
       method: 'POST',
       url: '/api/users'
     });
@@ -111,7 +109,7 @@ describe('UsersService', () => {
       expect(res).toEqual(mockUsers);
     });
 
-    const req = httpControler.expectOne({
+    const req = httpController.expectOne({
       method: 'PUT',
       url: `/api/users/123`
     });
@@ -124,7 +122,7 @@ describe('UsersService', () => {
       expect(res).toEqual(mockUsers);
     });
 
-    const req = httpControler.expectOne({
+    const req = httpController.expectOne({
       method: 'DELETE',
       url: `/api/users/123`
     });

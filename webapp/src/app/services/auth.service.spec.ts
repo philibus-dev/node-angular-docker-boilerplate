@@ -1,13 +1,12 @@
 import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {AuthService} from "./auth.service";
 import {AuthUser} from "../models/authUser";
 import Spy = jasmine.Spy;
 
 describe('AuthService', () => {
-  let service: AuthService,
-    httpControler: HttpTestingController;
+  let service: AuthService;
 
   let currUserNextSpy: Spy;
 
@@ -26,7 +25,6 @@ describe('AuthService', () => {
     });
 
     service = TestBed.inject(AuthService);
-    httpControler = TestBed.inject(HttpTestingController);
 
     currUserNextSpy = spyOn(service.$currUser, 'next').and.callThrough();
   });

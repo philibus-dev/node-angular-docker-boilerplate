@@ -5,7 +5,6 @@ import { UsersService } from '../../services/users.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { AuthUser } from '../../models/authUser';
 import Spy = jasmine.Spy;
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AppHeaderComponent', () => {
@@ -71,7 +70,7 @@ describe('AppHeaderComponent', () => {
     expect(routerNavigateSpy).toHaveBeenCalledWith(['/login']);
   });
 
-  it('should redirect when looutRedirect() is called', () => {
+  it('should redirect when logoutRedirect() is called', () => {
     const routerNavigateSpy: Spy = spyOn(component.router, 'navigate').and.stub()
     component.logoutRedirect();
     expect(routerNavigateSpy).toHaveBeenCalledWith(['/logout']);

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {AuthUser} from "../models/authUser";
 import {Subject} from "rxjs";
-import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +10,7 @@ export class AuthService {
 
   public currUser: AuthUser | null = null;
 
-  constructor(private http: HttpClient) {
+  constructor() {
 
     this.$currUser.subscribe((currUser: AuthUser | null) => {
       this.currUser = currUser;

@@ -1,7 +1,7 @@
 @import "style-includes/variables";
 
 * {
-  font-family: Lato;
+  font-family: Lato, 'sans-serif';
   box-sizing: border-box;
 }
 
@@ -41,15 +41,15 @@ body {
   justify-content: space-between;
 
   // Different backgrounds for rows
-  &.backgound-darker {
+  &.background-darker {
     background-color: $background-color-darker;
   }
-  &.no-backgound {
+  &.no-background {
     background: none;
   }
 
 
-  // Borders betweem the rows
+  // Borders between the rows
   &:not(:last-of-type) {
     border-bottom: 1px solid $border-color;
   }

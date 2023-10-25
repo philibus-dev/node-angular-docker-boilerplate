@@ -1,5 +1,4 @@
-const createError = require('http-errors'),
-	express = require('express'),
+const express = require('express'),
 	path = require('path'),
 	cookieParser = require('cookie-parser'),
 	logger = require('morgan'),
