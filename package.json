@@ -1,0 +1,19 @@
+{
+  "name": "angular-docker-boilerplate",
+  "version": "1.0.0",
+  "description": "Boilerplate with everything needed for a full stack authenticated web application.  Angular v16, Node v18 with Express, MongoDB with Mongoose, Authentication with Auth0, and \"Containerized\" with Docker.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "cd nodeJS && npm run test && cd .. && cd webapp && npm run test"
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^8.0.3"
+  }
+}
