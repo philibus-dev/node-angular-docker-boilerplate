@@ -1,7 +1,9 @@
 ./.idea
 .idea
 ./.git
+node_modules
 .DS_store
+.vscode
 
 nodeJS/node_modules
 nodeJS/public/webapp
