@@ -32,7 +32,19 @@ And then copy over "Domain", "Client ID" and "Client Secret" from the Applicatio
 
 IMPORTANT!  Don't forget `https://` in the beginning of "Domain"
 
-## Setup for Running Project Inside Docker Container
+## Configure Auth0 - Required for Authentication
+
+1. Make an account at [Auth0.com](https://auth0.com/).
+
+2. Create an "Application" in Auth0.  Choose Application Type of "Regular Web Application".
+
+3. Under **Allowed Callback URLs** enter:
+
+```
+http://localhost:4200, http://localhost:8080, http://localhost:4200/callback, http://localhost:8080/callback, http://localhost, http://localhost/callback
+```
+
+## Run Project Inside Docker Container
 
 Docker will connect to the MongoDB database, start NodeJS and start the Angular application.
 
