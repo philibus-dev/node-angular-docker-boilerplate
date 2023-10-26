@@ -1,15 +1,22 @@
 const MongoDB = require("./mongoDB");
 
 module.exports = class UserRepo {
-    mongoDb = new MongoDB();
+    mongoDb;
 
-    constructor() {
+    constructor(mongoDbInj = null) {
+        this.mongoDb = (mongoDbInj) ? mongoDbInj : new MongoDB();
+
         const userSchema = {
             name: String,
             email: String
         }
 
-        this.mongoDb.setSchema('users', userSchema);
+        try {
+            this.mongoDb.setSchema('users', userSchema);
+        } catch(e) {
+            console.error(e);
+        }
+
     }
 
     async openConnection() {
