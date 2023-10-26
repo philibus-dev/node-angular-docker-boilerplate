@@ -1,7 +1,8 @@
-import {Component, VERSION} from '@angular/core';
-import {AuthService} from "../../services/auth.service";
-import {AuthUser} from "../../models/authUser";
-import {UsersService} from "../../services/users.service";
+import { Component, VERSION } from '@angular/core';
+import { AuthService } from "../../services/auth.service";
+import { AuthUser } from "../../models/authUser";
+import { UsersService } from "../../services/users.service";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +16,8 @@ export class AppHeaderComponent {
 
   constructor(
     private authService: AuthService,
-    private userService: UsersService) {
+    private userService: UsersService,
+    public router: Router) {
 
     // Add a subscribe to get curr user signal
     this.authService.$currUser.subscribe({
@@ -38,11 +40,11 @@ export class AppHeaderComponent {
   }
 
   loginRedirect() {
-    window.location.replace("/login");
+    this.router.navigate(['/login']);
   }
 
   logoutRedirect() {
-    window.location.replace("/logout");
+    this.router.navigate(['/logout']);
   }
 
 }

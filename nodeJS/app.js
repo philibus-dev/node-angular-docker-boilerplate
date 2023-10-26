@@ -1,11 +1,11 @@
-const createError = require('http-errors'),
-	express = require('express'),
+const express = require('express'),
 	path = require('path'),
 	cookieParser = require('cookie-parser'),
 	logger = require('morgan'),
 	RateLimit = require('express-rate-limit'),
 	{ auth } = require('express-openid-connect'),
-	cors = require('cors');
+	cors = require('cors'),
+	index_controller = require('./controllers/index.controller');
 
 const indexRouter = require('./routes/index'),
 	apiRouter = require('./routes/api');
@@ -59,9 +59,7 @@ app.use('/', indexRouter);
 app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
-app.use((req, res, next) => {
-	next(createError(404));
-});
+app.use(index_controller.handleFourOfour);
 
 // error handler
 app.use(function (err, req, res) {

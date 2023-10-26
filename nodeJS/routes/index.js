@@ -1,14 +1,10 @@
 const express = require('express'),
-      router = express.Router();
-const path = require("path");
+    index_controller = require('../controllers/index.controller'),
+    router = express.Router();
 
-router.get("", (req, res) => {
-  res.redirect(301, '/webapp');
-});
+router.get("", index_controller.redirect_to_webapp);
 
 /* GET home page. */
-router.get(["/webapp", "/webapp/*"], (req, res) => {
-  res.sendFile(path.join(`${__dirname}/../public/webapp/index.html`));
-});
+router.get(["/webapp", "/webapp/*"], index_controller.send_index_html);
 
 module.exports = router;

@@ -5,7 +5,7 @@ import {Subject} from "rxjs";
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthServiceMock {
   $currUser: Subject<AuthUser | null> = new Subject<AuthUser | null>();
 
   public currUser: AuthUser | null = null;
