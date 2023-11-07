@@ -5,7 +5,9 @@ const express = require('express'),
 	RateLimit = require('express-rate-limit'),
 	{ auth } = require('express-openid-connect'),
 	cors = require('cors'),
-	index_controller = require('./controllers/index.controller');
+	IndexController = require('./controllers/index.controller');
+
+const index_controller = new IndexController();
 
 const indexRouter = require('./routes/index'),
 	apiRouter = require('./routes/api');

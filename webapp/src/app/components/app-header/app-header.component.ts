@@ -40,11 +40,11 @@ export class AppHeaderComponent {
   }
 
   loginRedirect() {
-    this.router.navigate(['/login']);
+    window.location.replace("/login");
   }
 
   logoutRedirect() {
-    this.router.navigate(['/logout']);
+    window.location.replace("/logout");
   }
 
 }
