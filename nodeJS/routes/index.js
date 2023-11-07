@@ -1,6 +1,8 @@
 const express = require('express'),
-    index_controller = require('../controllers/index.controller'),
+    IndexController = require('../controllers/index.controller'),
     router = express.Router();
+
+const index_controller = new IndexController();
 
 router.get("", index_controller.redirect_to_webapp);
 
