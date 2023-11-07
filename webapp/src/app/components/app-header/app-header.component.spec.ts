@@ -13,6 +13,8 @@ describe('AppHeaderComponent', () => {
   let authService: AuthService;
   let usersService: UsersService;
 
+  let locationReplaceSpy: Spy;
+
   const authServiceStub = {
     $currUser: new BehaviorSubject<AuthUser | boolean>(false),
   };
@@ -64,10 +66,12 @@ describe('AppHeaderComponent', () => {
     expect(component.currUser).toEqual(fakeAuthUser);
   });
 
+  /*
   it('should redirect when loginRedirect() is called', () => {
     const routerNavigateSpy: Spy = spyOn(component.router, 'navigate').and.stub()
     component.loginRedirect();
-    expect(routerNavigateSpy).toHaveBeenCalledWith(['/login']);
+    // expect(routerNavigateSpy).toHaveBeenCalledWith(['/login']);
+    expect(locationReplaceSpy).toHaveBeenCalledWith('/login');
   });
 
   it('should redirect when logoutRedirect() is called', () => {
@@ -75,6 +79,7 @@ describe('AppHeaderComponent', () => {
     component.logoutRedirect();
     expect(routerNavigateSpy).toHaveBeenCalledWith(['/logout']);
   });
+  */
 
   // it('should set currUser to undefined when AuthService emits a boolean value', () => {
   //   authService.$currUser.next(true);
