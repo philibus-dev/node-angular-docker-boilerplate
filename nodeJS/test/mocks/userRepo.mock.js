@@ -21,7 +21,7 @@ exports.constructor = () => {
 }
 
 exports.getAllUsers = () => {
-    return users
+    return users;
 }
 
 exports.addUser = (name, email) => {
