@@ -1,6 +1,7 @@
 # MEAN Boilerplate with Authentication and Containers
 
-Boilerplate with everything needed for a full stack authenticated web application.  Angular v16, Node v18 with Express, MongoDB with Mongoose, Authentication with Auth0, and "Containerized" with Docker.
+Boilerplate with everything needed for a full stack authenticated web application.  Angular v16, Node v18 with Express, MongoDB with Mongoose, Authentication with Auth0, and "Containerized" with Docker.  The database exists only inside the container, so Docker needs to be running for the application to work.  Authentication is handled by the Auth0 service, and requires an account there.  The project can be run locally, inside a container.
+
 
 ## Installation
 
@@ -55,7 +56,7 @@ An example `docker-compose.yml` file has been provided, but you will need to pop
 
 1. Install Docker: `https://docs.docker.com/get-docker/`.  Then run that Docker client.
 
-2. From the root directory, run the following command to create the images for MongoDB and the Javascript application: `docker-compose build`. This runs everything in the `docker-compose.yml` file.
+2. **From the root directory**, run the following command to create the images for MongoDB and the Javascript application: `docker-compose build`. This runs everything in the `docker-compose.yml` file.
 
  - Note: if you have a different Docker Compose file than `docker-compose.yml`, use `-f` like so:
 ```
@@ -69,11 +70,13 @@ docker-compose -f docker-compose-local.yml build
 
   - Tip: If you just make a change to the above .yml file, you can just `down` and then `up`, instead of doing another `build` and then `up`.  "Build" compiles all your application code into a container.  So if it's the same, you don't need to compile again.
 
-3. Run `docker-compose up` which will pull the images, create containers for them, creates volumes, and finally runs the container. You can instead run `docker-compose up -d` as "detatched" mode, which will run it behind the scenes, without logs and without displaying everything to the terminal window.
+## Run Docker Compose and build the application with "docker compose"
 
-4. Open a browser and go to `localhost`. No port number necessary.
+1. Run `docker-compose up` which will pull the images, create containers for them, creates volumes, and finally runs the container. You can instead run `docker-compose up -d` as "detatched" mode, which will run it behind the scenes, without logs and without displaying everything to the terminal window.
 
-5. When running in production in "detached" mode with `-d`, use the following command to stop the container:
+2. Open a browser and go to `localhost`. No port number necessary.
+
+3. When running in production in "detached" mode with `-d`, use the following command to stop the container:
 ```
 docker compose down
 ```
