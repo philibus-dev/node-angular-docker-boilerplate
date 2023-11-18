@@ -1,6 +1,6 @@
 # MEAN Boilerplate with Docker
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.1.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.3.
 
 ## Development server
 
