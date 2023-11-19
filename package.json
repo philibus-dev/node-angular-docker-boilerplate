@@ -1,6 +1,6 @@
 {
   "name": "angular-docker-boilerplate",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Boilerplate with everything needed for a full stack authenticated web application.  Angular v16, Node v18 with Express, MongoDB with Mongoose, Authentication with Auth0, and \"Containerized\" with Docker.",
   "main": "index.js",
   "scripts": {

@@ -32,6 +32,8 @@ describe('Test User Controller', () => {
         statusStub,
         jsonStub;
 
+    const origGetAllUsers = controller.userRepo.getAllUsers;
+
     beforeEach(() => {
         res = {
             status: (val) => {},
@@ -42,6 +44,8 @@ describe('Test User Controller', () => {
 
         statusStub = sinon.stub(res, 'status');
         jsonStub = sinon.stub(res, 'json');
+
+        controller.userRepo.getAllUsers = origGetAllUsers;
     });
 
     afterEach(() => {
@@ -60,7 +64,6 @@ describe('Test User Controller', () => {
         expect(jsonStub.calledWith(users)).to.be.true;
     });
 
-    /*
     it('should handle getting all users errors', async () => {
         controller.userRepo.getAllUsers = () => {
             return false;
@@ -82,7 +85,6 @@ describe('Test User Controller', () => {
         expect(statusStub.calledWith(500)).to.be.true;
         expect(jsonStub.called).to.be.true;
     });
-    */
 
     it('should get current user correctly', async () => {
         req = {
